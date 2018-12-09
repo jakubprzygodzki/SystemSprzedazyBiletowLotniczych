@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+<meta charset="UTF-8">
+<title>Przykład 37 - Minifikacja i konkatenacja skryptów</title>
+<link rel="stylesheet" href="css/main.css" />
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"
+	integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+	crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+	<div id="plane">
+
+		<div id="darkLayer" class="darkClass" style="display: none"></div>
+
+		<div class="strona">
+
+			<div id="1" class="seat">nr: 1</div>
+			<div id="2" class="seat">nr: 2</div>
+			<div id="3" class="seat">nr: 3</div>
+			<div id="4" class="seat">nr: 4</div>
+			<div id="5" class="seat">nr: 5</div>
+			<div id="6" class="seat">nr: 6</div>
+			<div id="7" class="seat">nr: 1</div>
+			<div id="8" class="seat">nr: 1</div>
+			<div id="9" class="seat">nr: 1</div>
+			<div id="10" class="seat">nr: 1</div>
+			<div id="11" class="seat">nr: 1</div>
+			<div id="12" class="seat">nr: 1</div>
+			<div id="13" class="seat">nr: 1</div>
+			<div id="14" class="seat">nr: 1</div>
+			<div id="15" class="seat">nr: 1</div>
+			<div id="16" class="seat">nr: 1</div>
+			<div id="17" class="seat">nr: 1</div>
+			<div id="18" class="seat">nr: 1</div>
+			<div id="19" class="seat">nr: 1</div>
+			<div id="20" class="seat">nr: 1</div>
+			<div id="21" class="seat">nr: 1</div>
+			<div id="22" class="seat">nr: 1</div>
+			<div id="23" class="seat">nr: 1</div>
+			<div id="24" class="seat">nr: 1</div>
+			<div id="25" class="seat">nr: 1</div>
+
+		</div>
+
+
+		<div class="strona">
+
+			<div class="seat">nr: 2</div>
+			<div class="seat">nr: 2</div>
+			<div class="seat">nr: 2</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+			<div class="seat">nr: 1</div>
+
+		</div>
+
+	</div>
+
+	<script>
+
+	(function(){
+
+
+		function pobierzMiejsca(aID) {
+
+	    $.ajax({
+	      url: "http://localhost:8080/BiletyLotnicze//seats",
+	      type: 'POST',
+	      dataType: 'json',
+	      data: JSON.stringify(aID),
+	      contentType: 'application/json',
+	      mimeType: 'application/json',
+
+	      success: function(data) {
+
+
+	        for (var i in  data) {
+
+	        	console.log(data[i]);
+	        	
+	        	if(data[i].available == 0){
+	        		var siedzenie = document.getElementById(data[i].nr);
+	        		siedzenie.classList.add("wolny");
+	        	}else{
+	        		var siedzenie = document.getElementById(data[i].nr);
+	        		siedzenie.classList.add("zajete");
+	        	}
+	        	
+
+	        }
+	      },
+	      error: function(data, status, er) {
+	        alert("error: " + data + " status: " + status + " er:" + er);
+	      }
+	    });
+	  }
+
+	
+		var aID = {
+				nr: 100
+		};
+
+		pobierzMiejsca(aID);
+
+	})();
+	
+	
+	function okay(){
+		var t = document.getElementById("darkLayer");
+		t.style.display = "none";
+		var t2 = document.getElementById("messageBox");
+		t2.parentNode.removeChild(t2);
+		
+	}
+	
+	function showInfo(){
+		
+		var t = document.getElementById("darkLayer");
+		t.style.display = "block";
+		
+        var div = document.createElement("div");
+
+        div.style.minWidth = "400px";
+        div.innerHTML = "Musisz być zalogowany aby wybrać miejsce!"
+        div.style.minHeight = "80px";
+        div.style.background = "white";
+        div.style.color = "blue";
+        div.style.position= "absolute";
+        div.style.left = "50%";
+        div.style.top = "50%";
+        div.style.zIndex= "99";
+        div.style.marginLeft="-200px";
+        div.style.marginTop="-40px";
+        div.style.borderRadius = "15px";
+        div.style.textAlign = "center";
+        div.id = "messageBox";
+        
+        document.getElementsByTagName("body")[0].appendChild(div);
+        
+        var button = document.createElement("div");
+        
+        button.style.maxWidth = "80px";
+        button.innerHTML = "OK"
+        button.style.maxHeight = "40px";
+        button.style.background = "green";
+        button.style.color = "blue";
+        button.style.margin="auto";
+        button.style.marginTop="20px";
+        button.style.borderRadius = "6px";
+        
+        div.appendChild(button);
+        
+        
+        button.addEventListener("click", okay, false); 
+	}
+	
+	
+	
+	var tab = new Array(100);
+	
+	for(var i = 1; i < 6; i++){
+	    tab[i] = document.getElementById(i); 
+	    tab[i].addEventListener("click", showInfo, false); 
+	}
+
+
+	</script>
+</body>
+
+</html>

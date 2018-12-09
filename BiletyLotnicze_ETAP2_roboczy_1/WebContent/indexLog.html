@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Przykład 37 - Minifikacja i konkatenacja skryptów</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <div id="intro">
+    <button id="zaloguj">Zaloguj sie</button>
+    <button>Rejestracja</button>
+
+
+
+    <h1>BILETY LOTNICZE</h1>
+    <h1>--- WAT AIRLINES --- </h1>
+  </div>
+
+  <article>
+    <form action="http://localhost:8080/BiletyLotnicze/wyloguj" method="get">
+      <input type="submit" value="Wyloguj">
+    </form>
+    <div id="darkLayer" class="darkClass" style="display:none"></div>
+
+
+
+    <div class="inputField">
+      <input id="inputFromCity" type="text" name="fromCity" placeholder="Tu wpisz miasto startowe">
+    </div>
+
+    <div class="inputField">
+      <input id="inputToCity" type="text" name="toCity" placeholder="Tu wpisz miasto docelowe">
+    </div>
+
+    <div id="buttons">
+      <button id="submit" type="submit">Szukaj</button>
+      <button id="cancel1" type="submit">Cancel</button>
+    </div>
+
+
+  </article>
+  <!--<div id="mapa"></div>-->
+  <div id="added-articles" class="table">
+  </div>
+
+
+  <footer>
+
+  </footer>
+
+
+  <!--  <head>
+        <title>login form</title>
+    </head>
+    <body>
+        <form method="post" action="login">
+        Email ID:<input type="text" name="login" /><br/>
+        Password:<input type="text" name="haslo" /><br/>
+        <input type="submit" value="login" />
+        </form>
+    </body> -->
+
+  <script>
+    aTicketData = {};
+
+
+    powolajFormularz = function(aTicketData) {
+
+      var div = document.createElement("div");
+      var h3 = document.createElement("h3");
+      var h4Imie = document.createElement("h4");
+      var h4Nazwisko = document.createElement("h4");
+      h3.innerHTML = "Formularz zakupu biletu: </br>" + "Nr miesjca: " + aTicketData.seatNumber;
+      h4Imie.innerHTML = "Imię";
+      h4Nazwisko.innerHTML = "Nazwisko";
+      var input1 = document.createElement("input");
+      var input2 = document.createElement("input");
+      var input3 = document.createElement("input");
+      div.appendChild(h3);
+      div.appendChild(h4Imie);
+      div.appendChild(input1);
+      div.appendChild(h4Nazwisko);
+      div.appendChild(input2);
+
+
+
+      var btn = document.createElement("BUTTON");
+      div.appendChild(btn);
+      div.className = "pulpit";
+      document.getElementsByTagName("body")[0].appendChild(div);
+
+      btn.addEventListener("click", function() {
+        var okno = document.getElementsByClassName("pulpit")[0];
+        kasujOkno(okno);
+      }, true);
+      
+    }
+
+
+
+    //------------------------------------------------------------------------------
+    kasujOkno = function(okno) {
+      //------------------------------------------------------------------------------
+      okno.parentNode.removeChild(okno);
+      var t = document.getElementById("darkLayer");
+      t.style.display = "none";
+
+    }
+
+
+    //------------------------------------------------------------------------------
+    function pobierzMiejsca(aID) {
+      //------------------------------------------------------------------------------
+      $.ajax({
+        url: "http://localhost:8080/BiletyLotnicze//seats",
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify(aID),
+        contentType: 'application/json',
+        mimeType: 'application/json',
+
+        success: function(data) {
+
+          for (var i in data) {
+
+            console.log("data[i]");
+            console.log(data[i]);
+
+
+            var div = document.createElement("div");
+            div.className = "seat";
+            div.minWidth = "100px";
+            div.minHeight = "50px";
+            div.background = " blue";
+            div.innerHTML = data[i].nr;
+            div.style.zIndex = "100";
+            div.id = data[i].nr;
+            document.getElementsByClassName("pulpit")[0].appendChild(div);
+
+            div.addEventListener("click", function(e) {
+              //alert(e.target.id);
+
+              aTicketData.seatNumber = e.target.id;
+              var okno = document.getElementsByClassName("pulpit")[0];
+              kasujOkno(okno);
+
+              powolajFormularz(aTicketData);
+
+            }, true);
+
+            var siedzenie;
+            // console.log("data[i]");
+            // console.log(data[i]);
+            // console.log(data[i].available);
+            // console.log(data[i].available == "0");
+            if (data[i].available == "0") {
+              siedzenie = document.getElementById(data[i].nr);
+              siedzenie.classList.add("wolne");
+            } else {
+              siedzenie = document.getElementById(data[i].nr);
+              siedzenie.classList.add("zajete");
+            }
+          }
+
+
+
+
+          var btn = document.createElement("BUTTON");
+          btn.innerHTML = "cancel";
+
+          document.getElementsByClassName("pulpit")[0].appendChild(btn);
+
+          var okno = document.getElementsByClassName("pulpit")[0];
+
+
+          var t = document.getElementById("darkLayer");
+          t.style.display = "block";
+
+          btn.addEventListener("click", function() {
+            console.log(okno);
+            kasujOkno(okno);
+          }, true);
+
+
+
+        },
+        error: function(data, status, er) {
+          alert("error: " + data + " status: " + status + " er:" + er);
+        }
+      });
+    }
+
+
+    //------------------------------------------------------------------------------
+    pokazRozkladSamolotu = function(aIDLotu) {
+      //------------------------------------------------------------------------------
+
+      var div = document.createElement("div");
+      div.className = "pulpit";
+      var divMiejsce = document.createElement("div");
+      divMiejsce.className = "pulpit";
+      divMiejsce.innerHTML = "asdas";
+
+      document.getElementsByTagName("body")[0].appendChild(div);
+
+      var t = pobierzMiejsca(aIDLotu);
+
+
+    }
+
+    //------------------------------------------------------------------------------
+    cancel1 = function() {
+      //------------------------------------------------------------------------------
+      var usun = document.getElementsByClassName("klasa");
+      var len = usun.length;
+      if (usun.length != 0) {
+
+        for (var i = 0; i < len; i++) {
+          usun[0].parentNode.removeChild(usun[0]);
+        }
+      }
+    }
+
+
+    var cancel = document.getElementById("cancel1")
+    cancel.addEventListener("click", cancel1, true);
+
+    var submit = document.getElementById("submit")
+    submit.addEventListener("click", sendAjax, true);
+
+
+    //------------------------------------------------------------------------------
+    function sendAjax() {
+      //------------------------------------------------------------------------------
+      var usun = document.getElementsByClassName("klasa");
+
+
+      if (usun.length != 0) {
+
+        var len = usun.length;
+
+        for (var i = 0; i < len; i++) {
+          usun[0].parentNode.removeChild(usun[0]);
+        }
+      }
+
+      var article = new Object();
+      article.inputFromCity = $('#inputFromCity').val();
+      article.inputToCity = $('#inputToCity').val();
+
+      //var mapa = document.getElementById("mapa");
+      //mapa.style.display = "block";
+
+      $.ajax({
+        url: "http://localhost:8080/BiletyLotnicze//jsonservlet",
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify(article),
+        contentType: 'application/json',
+        mimeType: 'application/json',
+
+        success: function(data) {
+
+          console.log("dataqqqqqqqqqqqqqq");
+          console.log(data);
+          console.log("div");
+          console.log(div);
+
+          var sArrayOfIDsOfFlights = [];
+          for (var i in data) {
+
+            console.log(data[i]);
+
+            var div = document.createElement("div");
+            div.id = data[i].IDLotu;
+            div.style.width = "700px";
+            div.style.height = "22px";
+            div.style.textAlign = "center";
+            div.style.color = "blue";
+            div.style.margin = "auto";
+            div.style.marginTop = "15px";
+            div.className = "klasa";
+            div.style.transition = "all 0.7s";
+            div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " " + data[i].odlot + " - " + data[i].odlot + " , id: " + data[i].IDLotu;
+
+            document.getElementById("added-articles").appendChild(div);
+
+            div.addEventListener("click", function(e) {
+
+              console.log(e);
+
+              pokazRozkladSamolotu({
+                nr: e.target.id
+              });
+
+            }, false)
+          }
+        },
+        error: function(data, status, er) {
+          alert("error: " + data + " status: " + status + " er:" + er);
+        }
+      });
+    }
+
+    //------------------------------------------------------------------------------
+    initMap = function() {
+      //------------------------------------------------------------------------------
+      var uluru = {
+        lat: 62.225333,
+        lng: 11.019154
+      };
+      var map = new google.maps.Map(document.getElementById('mapa'), {
+        zoom: 9,
+        center: uluru
+      });
+      var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+      });
+    }
+
+    goTozaloguj = function() {
+      window.location.href = 'http://localhost:8080/BiletyLotnicze/zaloguj.html';
+    }
+
+    var zaloguj = document.getElementById("zaloguj");
+    zaloguj.addEventListener("click", goTozaloguj, true);
+  </script>
+
+  <!-- <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBecyC_LYfo2Uo1GDB-RwKpyrBU5MYYgVc&callback=initMap">
+    </script>
+      -->
+
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+ <!DOCTYPE html>
+<html lang="pl">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Przykład 37 - Minifikacja i konkatenacja skryptów</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+  <div id="intro">
+  <button id = "zaloguj">Zaloguj sie</button>
+  <button>Rejestracja</button>
+    <h1>BILETY LOTNICZE</h1>
+    <h1>--- WAT AIRLINES --- </h1>
+  </div>
+  
+<article>
+
+<div id="darkLayer" class="darkClass" style="display:none"></div>
+
+
+<div id = "intro">
+    <div class="inputField">
+      <input id="inputFromCity" type="text" name="fromCity" placeholder="Tu wpisz miasto startowe">
+    </div>
+    
+    <div class="inputField">
+      <input id="inputToCity" type="text" name="toCity" placeholder="Tu wpisz miasto docelowe">
+    </div>
+    
+    <div id="buttons">
+      <button id= "submit" type="submit" >Szukaj</button>
+      <button id= "cancel1"  type="submit">Cancel</button>
+    </div>
+  </div>  
+
+  </article>
+	 <!--<div id="mapa"></div>-->
+  <div id="added-articles" class="table">
+  </div>
+  
+	
+  <footer>
+
+  </footer>
+
+
+   <!--  <head>
+        <title>login form</title>
+    </head>
+    <body>
+        <form method="post" action="login">
+        Email ID:<input type="text" name="login" /><br/>
+        Password:<input type="text" name="haslo" /><br/>
+        <input type="submit" value="login" />
+        </form>
+    </body> --> 
+
+  <script>
+
+  czyZalogowany = function(){
+	  alert("musisz sie logowac");
+
+  }
+  
+  
+ function cancel1(){
+
+	    var usun = document.getElementsByClassName("klasa2");
+	    var len = usun.length;
+	    if (usun.length != 0) {
+
+	      for (var i = 0; i < len; i++) {
+	        usun[0].parentNode.removeChild(usun[0]);
+	      }
+	    }
+  }
+
+
+  var cancel = document.getElementById("cancel1")
+  cancel.addEventListener("click", cancel1, true);
+
+var submit = document.getElementById("submit")
+submit.addEventListener("click", sendAjax, true);
+
+  function sendAjax() {
+
+    var usun = document.getElementsByClassName("klasa");
+
+
+    if (usun.length != 0) {
+
+      var len = usun.length;
+      
+      for (var i = 0; i < len; i++) {
+        usun[0].parentNode.removeChild(usun[0]);
+      }
+    }
+
+    var article = new Object();
+    article.inputFromCity = $('#inputFromCity').val();
+    article.inputToCity = $('#inputToCity').val();
+
+    //var mapa = document.getElementById("mapa");
+    //mapa.style.display = "block";
+
+    $.ajax({
+      url: "http://localhost:8080/BiletyLotnicze//jsonservlet",
+      type: 'POST',
+      dataType: 'json',
+      data: JSON.stringify(article),
+      contentType: 'application/json',
+      mimeType: 'application/json',
+
+      success: function(data) {
+
+        console.log("dataqqqqqqqqqqqqqq");
+        console.log(data);
+        console.log("div");
+        console.log(div);
+
+        for (var i in  data) {
+        	
+        	console.log(data[i]);
+          var div = document.createElement("div");
+          //var a = document.createElement('a');
+          //a.href= 'http://localhost:8080/BiletyLotnicze/'+ data[i].IDLotu + '.html';
+          //a.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " " + data[i].odlot + " - " + data[i].odlot ;
+          //a.target = "";
+          //a.style.textDecoration = "none";
+          div.style.width = "700px";
+          div.style.height = "22px";
+          div.style.textAlign = "center";
+          div.style.color = "blue";
+          div.style.margin = "auto";
+          div.style.marginTop = "15px";
+          div.className = "klasa2";
+          div.style.transition= "all 0.7s";
+          div.title = "Musisz być zalogowany, aby przeglądać informacje o połączeniu";
+         
+          div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " " + data[i].odlot + " - " + data[i].odlot ;
+          
+          document.getElementById("added-articles").appendChild(div);
+          
+          //div.appendChild(a);
+          
+          //a.addEventListener("click", czyZalogowany, true);
+        }
+      },
+      error: function(data, status, er) {
+        alert("error: " + data + " status: " + status + " er:" + er);
+      }
+    });
+  }
+
+
+  function initMap() {
+      var uluru = {lat: 62.225333, lng:  11.019154};
+      var map = new google.maps.Map(document.getElementById('mapa'), {
+        zoom: 9,
+        center: uluru
+      });
+      var marker = new google.maps.Marker({
+        position: uluru,
+        map: map
+      });
+    }
+  
+  goTozaloguj = function(){
+	  window.location.href = 'http://localhost:8080/BiletyLotnicze/zaloguj.html';
+  }
+  
+var zaloguj = document.getElementById("zaloguj");
+zaloguj.addEventListener("click", goTozaloguj, true);
+  
+  
+</script>
+
+  <!-- <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBecyC_LYfo2Uo1GDB-RwKpyrBU5MYYgVc&callback=initMap">
+    </script>
+      --> 
+    
+</body>
+
+</html>
+
