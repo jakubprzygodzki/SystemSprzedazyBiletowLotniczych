@@ -1,0 +1,161 @@
+body {
+  background-color: #e6eeff;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  display: block;
+}
+
+#intro {
+  background-color: #ccdcff;
+  height: 20%;
+}
+
+#main-form input {
+  min-width: 400px;
+  min-height: 50px;
+  border-radius: 10px;
+  margin-top: 40px;
+}
+
+h1 {
+  text-align: center;
+  color: #003099;
+  margin: 0;
+  font-size: 44px;
+  padding: 15px;
+}
+
+#buttons button {
+  height: 40px;
+  width: 80px;
+  background-color: #ccdcff;
+  border-radius: 15px;
+  text-align: center;
+  display: block;
+  font-size: 16px;
+  cursor: pointer;
+  float: left;
+  margin-top: 30px;
+  margin-left: 70px;
+}
+
+#buttons button:hover {
+  background-color: #6694ff;
+}
+
+article {
+  margin: auto;
+  min-height: 300px;
+  max-width: 400px;
+}
+
+.connectionItem {
+  background-color: #ccdcff;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 600px;
+  padding: 14px;
+  border-radius: 14px;
+  margin-top: 14px;
+  font-weight: bold;
+}
+
+.connectionItemNoLogin {
+  background-color: #ccdcff;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 600px;
+  padding: 14px;
+  border-radius: 14px;
+  margin-top: 14px;
+}
+
+.connectionItem:hover {
+  background-color: #6694ff;
+  margin: 0 auto;
+  width: 80%;
+  max-width: 600px;
+  padding: 19px;
+  border-radius: 14px;
+  margin-top: 22px;
+  cursor: pointer;
+}
+
+.connectionItemNoLogin:hover {
+  cursor: no-drop;
+}
+
+.seat {
+  min-width: 40px;
+  min-height: 40px;
+  background-color: green;
+  margin: 20px;
+  float: left;
+  text-align: center;
+  font-size:20px;
+  border-radius: 10px;
+
+}
+
+.seat.freeSeat {
+  background-color: green;
+}
+
+.seat.freeSeat:hover {
+  background-color: blue;
+  margin: 20px;
+}
+
+.seat.noAvailable {
+  background-color: red;
+}
+
+.strona {
+  float: left;
+  max-width: 300px;
+  margin: auto;
+}
+
+#plane {
+  margin: auto;
+  max-width: 600px;
+}
+
+.darkClass {
+  background-color: white;
+  filter: alpha(opacity=50);
+  opacity: 0.5;
+  -moz-opacity: 0.50;
+  z-index: 20;
+  height: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#mapa {
+  height: 300px;
+  width: 300px;
+  display: none;
+  position: absolute;
+  left: 10px;
+  top: 200px;
+}
+
+.pulpit {
+  max-width: 400px;
+  min-width: 400px;
+  min-height: 500px;
+  background-color: white;
+  position: absolute;
+  left: 50%;
+  top: 10%;
+  z-index: 99;
+  margin-left: -200px;
+  border: 3px solid black;
+  
+}
