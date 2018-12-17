@@ -23,9 +23,9 @@
     <h1>BILETY LOTNICZE</h1>
     <h1>-WAT AIRLINES- </h1>
 
-    <form action="http://localhost:8080/BiletyLotnicze/wyloguj" method="get">
-     <input id="registartion" type="submit" value="Rejestracja">
-   </form>
+
+     <button id="registartion"> Rejestracja</button>
+
 
    <form action="http://localhost:8080/BiletyLotnicze/zaloguj.html" method="get">
     <input id="login" type="submit" value="Zaloguj">
@@ -196,12 +196,56 @@
       window.location.href = 'http://localhost:8080/BiletyLotnicze/zaloguj.html';
     }
 
+    register = function(){
+      var f = new Ext.FormPanel({
+             labelWidth: 100,
+             url: '/login.php',
+             height: 350,
+             width: 200,
+             frame: true,
+             defaults: {width: 100},
+             applyTo: 'dlg-login-center',
+             region: 'center',
+             items: [{xtype: 'textfield',minWidth: 275,
+                      fieldLabel: 'Email address',
+                      name: 'email',
+                      vtype: 'email'},
+                     {xtype: 'textfield',minWidth: 275,
+                      inputType: 'password',
+                      fieldLabel: 'Password',
+                      name: 'password',
+                      allowBlank: false}],
+             buttons: [{text: 'OK',
+                 minWidth: 75,
+                 handler: function() {loginDlg.close()}},
+                 {text: 'Cancel',
+                     minWidth: 75,
+                     handler: function() {loginDlg.close()}}]
+         });
+
+         var loginDlg = new Ext.Window({
+             applyTo: 'dlg-login',
+             height: 350,
+             width: 300,
+             closable: true,
+             modal: true,
+             title: 'Login',
+             layout: 'border',
+             items: f
+         });
+         loginDlg.show();
+    }
+
     showMessageBox = function(sText){
     	Ext.Msg.alert('Uwaga!', sText, null);
     }
 
-    var zaloguj = document.getElementById("zaloguj");
-    zaloguj.addEventListener("click", goTozaloguj, true);
+  //  var zaloguj = document.getElementById("zaloguj");
+  //  zaloguj.addEventListener("click", goTozaloguj, true);
+
+    var registration = document.getElementById("registartion");
+    registration.addEventListener("click", register, true);
+
 
 
 
