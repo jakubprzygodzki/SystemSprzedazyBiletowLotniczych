@@ -2,6 +2,13 @@
 <html lang="pl">
 
 <head>
+
+
+  <link rel="stylesheet" type="text/css" href="extjs-master/build/classic/theme-classic/resources/theme-classic-all.css" />
+  <script type="text/javascript" src="extjs-master/build/ext-all.js"> </script>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+
   <meta charset="UTF-8">
   <title>Przykład 37 - Minifikacja i konkatenacja skryptów</title>
   <link rel="stylesheet" href="css/main.css" />
@@ -11,6 +18,7 @@
 <body>
 
   <div id="intro">
+  <img class = "logoWAT" alt="WATLOGO" src="img/watLogo.jpg">
     <button id="zaloguj">Zaloguj sie</button>
     <button>Rejestracja</button>
     <h1>BILETY LOTNICZE</h1>
@@ -29,7 +37,9 @@
       <div class="inputField">
         <input id="inputToCity" type="text" name="toCity" placeholder=" Tu wpisz miasto docelowe">
       </div>
-
+      <div class="inputField">
+     	 <input type="date" name="date">
+	</div>
       <div id="buttons">
         <button id="submit" type="submit">Szukaj</button>
         <button id="cancel1" type="submit">Cancel</button>
@@ -59,9 +69,11 @@
     </body> -->
 
   <script>
+ 
+  
+  
     czyZalogowany = function() {
       alert("musisz sie logowac");
-
     }
 
 
@@ -134,7 +146,20 @@
             div.title = "Musisz być zalogowany, aby przeglądać informacje o połączeniu";
             div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " " + data[i].odlot + " - " + data[i].odlot;
             document.getElementById("added-articles").appendChild(div);
+
+          //  var aConnectionItemNoLogin = document.getElementsByClassName("connectionItemNoLogin");
+
+         //   for(var i = 0; i < aConnectionItemNoLogin.length; i++){
+            	div.addEventListener("click", function(){showMessageBox("Musisz być zalogowany, aby wyświetlić szczegóły połączenia")}, true);
+           // }
+
+
           }
+          
+          if(data.length == 0){
+              showMessageBox("Nie znaleziono żadnych połączeń!");
+            }
+          
         },
         error: function(data, status, er) {
           alert("error: " + data + " status: " + status + " er:" + er);
@@ -162,8 +187,17 @@
       window.location.href = 'http://localhost:8080/BiletyLotnicze/zaloguj.html';
     }
 
+    showMessageBox = function(sText){
+    	Ext.Msg.alert('Uwaga!', sText, null);
+    }
+
     var zaloguj = document.getElementById("zaloguj");
     zaloguj.addEventListener("click", goTozaloguj, true);
+
+
+
+
+
   </script>
 
   <!-- <script async defer

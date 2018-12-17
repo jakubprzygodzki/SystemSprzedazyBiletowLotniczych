@@ -31,6 +31,7 @@
 <body>
 
   <div id="intro">
+    <img class="logoWAT" alt="WATLOGO" src="img/watLogo.jpg">
     <button id="zaloguj">Zaloguj sie</button>
     <button>Rejestracja</button>
 
@@ -57,6 +58,10 @@
         <input id="inputToCity" type="text" name="toCity" placeholder=" Tu wpisz miasto docelowe">
       </div>
 
+      <div class="inputField">
+        <input type="date" name="date">
+      </div>
+
       <div id="buttons">
         <button id="submit" type="submit">Szukaj</button>
         <button id="deleteConnectionsItems" type="submit">Cancel</button>
@@ -65,17 +70,22 @@
 
   </article>
   <form action="http://localhost:8080/BiletyLotnicze//dowloadTicket" method='POST' id='formid'>
-                <input type='hidden' value='' name='name' id='name'/>
-                <input type='hidden' value=' ' name='lastname'  id='lastName' />
-                <input type='hidden' value=' ' name='lastname'  id='pesel' />
-                <input type='hidden' value=' ' name='lastname'  id='arrivalTime' />
-                <input type='hidden' value=' ' name='lastname'  id='departureTime' />
-                <input type='hidden' value=' ' name='lastname'  id='arrivalPlace' />
-                <input type='hidden' value=' ' name='lastname'  id='departurePlace' />
-                <input type='hidden' value=' ' name='lastname'  id='seatNumber' />
-            </form>
-  <!--<div id="mapa"></div>-->
+    <input type='hidden' value='' name='name' id='name' />
+    <input type='hidden' value=' ' name='lastname' id='lastName' />
+    <input type='hidden' value=' ' name='lastname' id='pesel' />
+    <input type='hidden' value=' ' name='lastname' id='arrivalTime' />
+    <input type='hidden' value=' ' name='lastname' id='departureTime' />
+    <input type='hidden' value=' ' name='lastname' id='arrivalPlace' />
+    <input type='hidden' value=' ' name='lastname' id='departurePlace' />
+    <input type='hidden' value=' ' name='lastname' id='seatNumber' />
+  </form>
+
+
+  <div id="mapa1"></div>
+  <div id="mapa2"></div>
+
   <div id="added-articles" class="table">
+
   </div>
 
   <!--  <head>
@@ -90,10 +100,6 @@
     </body> -->
 
   <script>
-
-
-
-
     //------------------------------------------------------------------------------
     showBuyTicketForm = function(aTicketData, aWindow1) {
       //------------------------------------------------------------------------------
@@ -127,12 +133,12 @@
       var input1 = document.createElement("input");
       var input2 = document.createElement("input");
       var input3 = document.createElement("input");
-      
+
       input1.id = "inputName";
       input2.id = "inputLastName";
       input3.id = "inputPESEL";
-      
-      
+
+
       div.appendChild(h3);
       div.appendChild(h3Arrival);
       div.appendChild(h3Departure);
@@ -150,24 +156,24 @@
       div.appendChild(input3);
 
 
-      dupa2= function() {
-    	  
-    	  var aTicket = new Object();
-    	  
-    	  aTicket.inputName = document.getElementById('inputName').value;
-    	  aTicket.inputLastName = document.getElementById('inputLastName').value;
-    	  aTicket.inputPESEL = document.getElementById('inputPESEL').value;
- 
+      dupa2 = function() {
 
-    	  document.getElementById('name').value = aTicket.inputName;
-    	  document.getElementById('lastName').value = aTicket.inputLastName;
-    	  document.getElementById('pesel').value = aTicket.inputPESEL;
-    	  
-    	  document.getElementById('arrivalTime').value = aTicketData.odlot;
-    	  document.getElementById('departureTime').value = aTicketData.odlot;
-    	  document.getElementById('arrivalPlace').value = aTicketData.fromCity;
-    	  document.getElementById('departurePlace').value = aTicketData.toCity;
-    	  document.getElementById('seatNumber').value = aTicketData.seatNumber;
+        var aTicket = new Object();
+
+        aTicket.inputName = document.getElementById('inputName').value;
+        aTicket.inputLastName = document.getElementById('inputLastName').value;
+        aTicket.inputPESEL = document.getElementById('inputPESEL').value;
+
+
+        document.getElementById('name').value = aTicket.inputName;
+        document.getElementById('lastName').value = aTicket.inputLastName;
+        document.getElementById('pesel').value = aTicket.inputPESEL;
+
+        document.getElementById('arrivalTime').value = aTicketData.odlot;
+        document.getElementById('departureTime').value = aTicketData.odlot;
+        document.getElementById('arrivalPlace').value = aTicketData.fromCity;
+        document.getElementById('departurePlace').value = aTicketData.toCity;
+        document.getElementById('seatNumber').value = aTicketData.seatNumber;
 
         $('#formid').submit();
       }
@@ -369,6 +375,9 @@
       article.inputFromCity = $('#inputFromCity').val();
       article.inputToCity = $('#inputToCity').val();
 
+      var dateControl = document.querySelector('input[type="date"]');
+      article.date = dateControl.value;
+      //  alert(article.date);
       //var mapa = document.getElementById("mapa");
       //mapa.style.display = "block";
 
@@ -420,6 +429,14 @@
             }, false)
 
           }
+
+
+          //data[i].inputFromCity;
+          //data[i].inputToCity;
+
+
+
+
         },
         error: function(data, status, er) {
           alert("error: " + data + " status: " + status + " er:" + er);
@@ -427,22 +444,68 @@
       });
     }
 
-    //------------------------------------------------------------------------------
-    initMap = function() {
-      //------------------------------------------------------------------------------
-      var uluru = {
-        lat: 62.225333,
-        lng: 11.019154
-      };
-      var map = new google.maps.Map(document.getElementById('mapa'), {
-        zoom: 9,
-        center: uluru
-      });
-      var marker = new google.maps.Marker({
-        position: uluru,
-        map: map
-      });
+
+    showMap = function() {
+
+      var sFrom = $('#inputFromCity').val();
+      var sTo = $('#inputToCity').val();
+
+
+      var uluru = {};
+      var t1 = Math.random() * 51;
+      var t2 = Math.random() * 51;
+
+      uluru.lat = t1.toPrecision(5);
+      uluru.lng = t2.toPrecision(5);
+
+
+      initMap(uluru);
+
+      document.getElementById('mapa1').style.display = "block";
     }
+
+    //------------------------------------------------------------------------------
+    initMap = function(uluru) {
+      //------------------------------------------------------------------------------
+
+
+      if (uluru == undefined) {
+
+
+        var uluru = {
+          lat: 52.135333,
+          lng: 21.019154
+        };
+        var map = new google.maps.Map(document.getElementById('mapa1'), {
+          zoom: 9,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      } else {
+        // var uluru = {
+        //   lat: 52.135333,
+        //   lng: 21.019154
+        // };
+        uluru.lat = Number(uluru.lat);
+        uluru.lng = Number(uluru.lng);
+
+
+        var map = new google.maps.Map(document.getElementById('mapa1'), {
+          zoom: 9,
+          center: uluru
+        });
+        var marker = new google.maps.Marker({
+          position: uluru,
+          map: map
+        });
+      }
+      //  document.getElementById('mapa1').style.display = "block";
+    }
+
+
 
 
 
@@ -451,12 +514,12 @@
 
     var submit = document.getElementById("submit")
     submit.addEventListener("click", searchConnections, true);
+    submit.addEventListener("click", showMap, true);
   </script>
 
-  <!-- <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBecyC_LYfo2Uo1GDB-RwKpyrBU5MYYgVc&callback=initMap">
-    </script>
-      -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBecyC_LYfo2Uo1GDB-RwKpyrBU5MYYgVc&callback=initMap">
+  </script>
+
 
 </body>
 
