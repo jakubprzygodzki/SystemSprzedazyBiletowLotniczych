@@ -19,10 +19,19 @@
 
   <div id="intro">
   <img class = "logoWAT" alt="WATLOGO" src="img/watLogo.jpg">
-    <button id="zaloguj">Zaloguj sie</button>
-    <button>Rejestracja</button>
+
     <h1>BILETY LOTNICZE</h1>
     <h1>-WAT AIRLINES- </h1>
+
+    <form action="http://localhost:8080/BiletyLotnicze/wyloguj" method="get">
+     <input id="registartion" type="submit" value="Rejestracja">
+   </form>
+
+   <form action="http://localhost:8080/BiletyLotnicze/zaloguj.html" method="get">
+    <input id="login" type="submit" value="Zaloguj">
+  </form>
+
+
   </div>
 
   <article>
@@ -69,9 +78,9 @@
     </body> -->
 
   <script>
- 
-  
-  
+
+
+
     czyZalogowany = function() {
       alert("musisz sie logowac");
     }
@@ -155,11 +164,11 @@
 
 
           }
-          
+
           if(data.length == 0){
               showMessageBox("Nie znaleziono żadnych połączeń!");
             }
-          
+
         },
         error: function(data, status, er) {
           alert("error: " + data + " status: " + status + " er:" + er);

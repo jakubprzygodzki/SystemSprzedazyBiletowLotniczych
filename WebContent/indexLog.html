@@ -37,12 +37,13 @@
 
     <h1>BILETY LOTNICZE</h1>
     <h1>-WAT AIRLINES-</h1>
+    
+   <form action="http://localhost:8080/BiletyLotnicze/wyloguj" method="get">
+    <input id="logoff" type="submit" value="Wyloguj">
+  </form>
+    
   </div>
 
-
-  <form action="http://localhost:8080/BiletyLotnicze/wyloguj" method="get">
-    <input type="submit" value="Wyloguj">
-  </form>
 
 
   <article>
@@ -80,7 +81,7 @@
     <input type='hidden' value=' ' name='lastname' id='seatNumber' />
   </form>
 
-
+<h3 id="location" > Lokalizacja docelowa: </h3>
   <div id="mapa1"></div>
   <div id="mapa2"></div>
 
@@ -462,6 +463,7 @@
       initMap(uluru);
 
       document.getElementById('mapa1').style.display = "block";
+      document.getElementById('location').style.display = "block";
     }
 
     //------------------------------------------------------------------------------

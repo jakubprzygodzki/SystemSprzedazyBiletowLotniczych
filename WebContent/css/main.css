@@ -16,7 +16,7 @@ body {
 }
 #intro {
   background-color: #ccdcff;
-  height: 20%;
+  min-height: 28%;
 -webkit-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.75);
 -moz-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.75);
 box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.75);
@@ -161,7 +161,64 @@ article {
   border-radius: 150px;
 }
 
+#location{
+	height: 300px;
+  width: 300px;
+  display: none;
+  position: absolute;
+    left: 30px;
+  top: 230px;
+  font-size:18px;
+  color: #003099;
+}
 
+#logoff{
+  background-color: #ccdcff;
+  border: 0px solid #ccdcff;
+  font-size: 18px;
+  transition: 0.2s linear;
+  	position: absolute;
+	right: 15%;
+	top: 2%;
+}
+
+#logoff:hover{
+  font-size: 19px;
+  transition: 0.2s linear;
+  color:#003099;
+}
+
+#registartion{
+	  background-color: #ccdcff;
+  border: 0px solid #ccdcff;
+  font-size: 18px;
+  transition: 0.2s linear;
+  	position: absolute;
+	right: 22%;
+	top: 2%;
+}
+
+#registartion:hover{
+  font-size: 19px;
+  transition: 0.2s linear;
+  color:#003099;
+}
+
+#login{
+	  background-color: #ccdcff;
+  border: 0px solid #ccdcff;
+  font-size: 18px;
+  transition: 0.2s linear;
+  	position: absolute;
+	right: 15%;
+	top: 2%;
+}
+
+#login:hover{
+  font-size: 19px;
+  transition: 0.2s linear;
+  color:#003099;
+}
 
 .pulpit {
   max-width: 400px;
