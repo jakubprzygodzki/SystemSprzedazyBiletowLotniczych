@@ -18,18 +18,18 @@
 <body>
 
   <div id="intro">
-  <img class = "logoWAT" alt="WATLOGO" src="img/watLogo.jpg">
+    <img class="logoWAT" alt="WATLOGO" src="img/watLogo.jpg">
 
     <h1>BILETY LOTNICZE</h1>
     <h1>-WAT AIRLINES- </h1>
 
 
-     <button id="registartion"> Rejestracja</button>
+    <button id="registartion"> Rejestracja</button>
 
 
-   <form action="http://localhost:8080/BiletyLotnicze/zaloguj.html" method="get">
-    <input id="login" type="submit" value="Zaloguj">
-  </form>
+    <form action="http://localhost:8080/BiletyLotnicze/zaloguj.html" method="get">
+      <input id="login" type="submit" value="Zaloguj">
+    </form>
 
 
   </div>
@@ -47,8 +47,8 @@
         <input id="inputToCity" type="text" name="toCity" placeholder=" Tu wpisz miasto docelowe">
       </div>
       <div class="inputField">
-     	 <input type="date" name="date">
-	</div>
+        <input type="date" name="date">
+      </div>
       <div id="buttons">
         <button id="submit" type="submit">Szukaj</button>
         <button id="cancel1" type="submit">Cancel</button>
@@ -78,9 +78,6 @@
     </body> -->
 
   <script>
-
-
-
     czyZalogowany = function() {
       alert("musisz sie logowac");
     }
@@ -156,18 +153,20 @@
             div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " " + data[i].odlot + " - " + data[i].odlot;
             document.getElementById("added-articles").appendChild(div);
 
-          //  var aConnectionItemNoLogin = document.getElementsByClassName("connectionItemNoLogin");
+            //  var aConnectionItemNoLogin = document.getElementsByClassName("connectionItemNoLogin");
 
-         //   for(var i = 0; i < aConnectionItemNoLogin.length; i++){
-            	div.addEventListener("click", function(){showMessageBox("Musisz być zalogowany, aby wyświetlić szczegóły połączenia")}, true);
-           // }
+            //   for(var i = 0; i < aConnectionItemNoLogin.length; i++){
+            div.addEventListener("click", function() {
+              showMessageBox("Musisz być zalogowany, aby wyświetlić szczegóły połączenia")
+            }, true);
+            // }
 
 
           }
 
-          if(data.length == 0){
-              showMessageBox("Nie znaleziono żadnych połączeń!");
-            }
+          if (data.length == 0) {
+            showMessageBox("Nie znaleziono żadnych połączeń!");
+          }
 
         },
         error: function(data, status, er) {
@@ -196,61 +195,132 @@
       window.location.href = 'http://localhost:8080/BiletyLotnicze/zaloguj.html';
     }
 
-    register = function(){
+    register = function() {
       var f = new Ext.FormPanel({
-             labelWidth: 100,
-             url: '/login.php',
-             height: 350,
-             width: 200,
-             frame: true,
-             defaults: {width: 100},
-             applyTo: 'dlg-login-center',
-             region: 'center',
-             items: [{xtype: 'textfield',minWidth: 275,
-                      fieldLabel: 'Email address',
-                      name: 'email',
-                      vtype: 'email'},
-                     {xtype: 'textfield',minWidth: 275,
-                      inputType: 'password',
-                      fieldLabel: 'Password',
-                      name: 'password',
-                      allowBlank: false}],
-             buttons: [{text: 'OK',
-                 minWidth: 75,
-                 handler: function() {loginDlg.close()}},
-                 {text: 'Cancel',
-                     minWidth: 75,
-                     handler: function() {loginDlg.close()}}]
-         });
+    	  id: 'ExtForm',
+        labelWidth: 100,
+        url: 'http://localhost:8080/BiletyLotnicze/zaloguj.html',
+        height: 200,
+        width: 300,
+        frame: true,
 
-         var loginDlg = new Ext.Window({
-             applyTo: 'dlg-login',
-             height: 350,
-             width: 300,
-             closable: true,
-             modal: true,
-             title: 'Login',
-             layout: 'border',
-             items: f
-         });
-         loginDlg.show();
+        defaults: {
+          width: 100
+        },
+        //applyTo: 'dlg-login-center',
+        region: 'center',
+        items: [{
+            xtype: 'textfield',
+            minWidth: 275,
+            fieldLabel: 'login',
+            name: 'login',
+            vtype: 'login',
+            id: 'loginInput'
+          },
+          {
+            xtype: 'textfield',
+            minWidth: 275,
+            inputType: 'Email',
+            fieldLabel: 'email',
+            name: 'email',
+            allowBlank: false,
+            id: 'emailInput'
+          },
+          {
+              xtype: 'textfield',
+              minWidth: 275,
+              inputType: 'password',
+              fieldLabel: 'password',
+              name: 'password',
+              allowBlank: false,
+              id: 'passwordInput'
+            }
+        ],
+        buttons: [{
+            text: 'Zarejestruj!',
+            minWidth: 75,
+            handler: function() {
+            	//showMessageBox("Zarejestrowałeś się!");
+            	//window.location.href = 'http://localhost:8080/BiletyLotnicze/zaloguj.html';
+            	var aRegisterParmas = new Object();
+ 
+            	
+            	var sLogin = Ext.getCmp('loginInput').getValue();
+            	var sEmail = Ext.getCmp('emailInput').getValue();
+            	var sPassword = Ext.getCmp('passwordInput').getValue();
+            	
+
+            	aRegisterParmas.login = sLogin;
+            	aRegisterParmas.email = sEmail;
+            	aRegisterParmas.password = sPassword;
+            	
+
+                $.ajax({
+                  url: "http://localhost:8080/BiletyLotnicze//register",
+                  type: 'POST',
+                  dataType: 'json',
+                  data: JSON.stringify(aRegisterParmas),
+                  contentType: 'application/json',
+                  mimeType: 'application/json',
+
+                  success: function(data) {
+
+                	 console.log(data);
+                	 
+                	  Ext.Msg.alert('Uwaga!', data, null);
+                	  
+                	  //alert(data.indexOf("istnieje") );
+                	  
+                	  if(data.indexOf("istnieje") > -1){
+                		  
+                	  }
+                	  else{
+                		  Ext.getCmp('loginDlg').hide();
+                	  }
+                	  
+
+                  },
+                  error: function(data, status, er) {
+                    alert("error: " + JSON.stringify(data) + " status: " + status + " er:" + er);
+                  }
+                });
+            }
+          },
+          {
+            text: 'Cancel',
+            minWidth: 75,
+            handler: function() {
+              loginDlg.close()
+            }
+          }
+        ]
+      });
+
+      var loginDlg = new Ext.Window({
+        //applyTo: 'dlg-login',
+        id: 'loginDlg',
+        height: 300,
+        width: 320,
+        closable: true,
+        modal: true,
+        title: 'Login',
+        layout: 'border',
+        resizable: false,
+        scrollable: true,
+        items: f
+      });
+      loginDlg.show();
     }
 
-    showMessageBox = function(sText){
-    	Ext.Msg.alert('Uwaga!', sText, null);
+    showMessageBox = function(sText) {
+      Ext.Msg.alert('Uwaga!', sText, null);
     }
 
-  //  var zaloguj = document.getElementById("zaloguj");
-  //  zaloguj.addEventListener("click", goTozaloguj, true);
+    //  var zaloguj = document.getElementById("zaloguj");
+    //  zaloguj.addEventListener("click", goTozaloguj, true);
 
     var registration = document.getElementById("registartion");
     registration.addEventListener("click", register, true);
-
-
-
-
-
-
   </script>
 
   <!-- <script async defer
