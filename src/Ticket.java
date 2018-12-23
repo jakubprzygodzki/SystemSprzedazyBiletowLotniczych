@@ -10,7 +10,7 @@ public class Ticket {
 	public String departurePlace;
 	public String seatNumber;
 	public String date;
+	public String idLotu;
 	
-
 }
 

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import art.copy.ArticleOLD;
+
 
 public class JSONServlet extends HttpServlet {
 

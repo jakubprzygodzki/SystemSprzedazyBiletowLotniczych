@@ -3,65 +3,44 @@
 
 <head>
   <meta charset="UTF-8">
-
-
   <!--     <link rel = "stylesheet" type = "text/css"
          href = "https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/classic/theme-gray/resources/theme-gray-all.css" / >
       <script type = "text/javascript"
          src = "https://cdnjs.cloudflare.com/ajax/libs/extjs/6.0.0/ext-all.js"> </script>
       <script type = "text/javascript" src = "app.js" > </script>    -->
-
-
-
   <!--    <link rel = "stylesheet" type = "text/css"
          href = "ext-6.6.0/build/classic/theme-classic/resources/theme-classic-all.css" />
       <script type = "text/javascript" src = "ext-6.6.0/build/ext-all.js" > </script>   -->
-
-
   <link rel="stylesheet" type="text/css" href="extjs-master/build/classic/theme-classic/resources/theme-classic-all.css" />
   <script type="text/javascript" src="extjs-master/build/ext-all.js"> </script>
-
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
-
   <title>Przykład 37 - Minifikacja i konkatenacja skryptów</title>
   <link rel="stylesheet" href="css/main.css" />
   <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 </head>
 
 <body>
-
   <div id="intro">
     <img class="logoWAT" alt="WATLOGO" src="img/watLogo.jpg">
-
-
     <h1>BILETY LOTNICZE</h1>
     <h1>-WAT AIRLINES-</h1>
-
     <form action="http://localhost:8080/BiletyLotnicze/wyloguj" method="get">
       <input id="logoff" type="submit" value="Wyloguj">
     </form>
-
   </div>
 
-
-
   <article>
-
     <div id="darkLayer" class="darkClass" style="display:none"></div>
-
     <div id="main-form">
       <div class="inputField">
         <input id="inputFromCity" type="text" name="fromCity" placeholder=" Tu wpisz miasto startowe">
       </div>
-
       <div class="inputField">
         <input id="inputToCity" type="text" name="toCity" placeholder=" Tu wpisz miasto docelowe">
       </div>
-
       <div class="inputField">
         <input type="date" name="date">
       </div>
-
       <div id="buttons">
         <button id="submit" type="submit">Szukaj</button>
         <button id="deleteConnectionsItems">Cancel</button>
@@ -79,6 +58,7 @@
     <input type='hidden' value=' ' name='departurePlace' id='departurePlace' />
     <input type='hidden' value=' ' name='seatNumber' id='seatNumber' />
     <input type='hidden' value=' ' name='date' id='date' />
+    <input type='hidden' value=' ' name='idLotu' id='idLotu' />
   </form>
 
   <h3 id="location"> Lokalizacja docelowa: </h3>
@@ -86,31 +66,17 @@
   <div id="added-articles" class="table">
   </div>
 
-  <!--  <head>
-        <title>login form</title>
-    </head>
-    <body>
-        <form method="post" action="login">
-        Email ID:<input type="text" name="login" /><br/>
-        Password:<input type="text" name="haslo" /><br/>
-        <input type="submit" value="login" />
-        </form>
-    </body> -->
-
   <script>
-
-  showMessageBox = function(sText) {
-    Ext.Msg.alert('Uwaga!', sText, null);
-  }
-
+    //------------------------------------------------------------------------------
+    showMessageBox = function(sText) {
+      //------------------------------------------------------------------------------
+      Ext.Msg.alert('Uwaga!', sText, null);
+    }
 
 
     //------------------------------------------------------------------------------
     showBuyTicketForm = function(aTicketData, aWindow1) {
       //------------------------------------------------------------------------------
-
-      console.log("Windos1");
-      console.log(aWindow1);
 
       aWindow1.hide();
 
@@ -148,19 +114,13 @@
       div.appendChild(h3Date);
       div.appendChild(h3ArrivalTime);
       div.appendChild(h3DepartureTime);
-
       div.appendChild(h3Arrival);
       div.appendChild(h3Departure);
       div.appendChild(h3);
-
-
-
       div.appendChild(h4Imie);
       div.appendChild(input1);
-
       div.appendChild(h4Nazwisko);
       div.appendChild(input2);
-
       div.appendChild(h4Pesel);
       div.appendChild(input3);
 
@@ -172,12 +132,9 @@
         aTicket.inputName = document.getElementById('inputName').value;
         aTicket.inputLastName = document.getElementById('inputLastName').value;
         aTicket.inputPESEL = document.getElementById('inputPESEL').value;
-
-
         document.getElementById('name').value = aTicket.inputName;
         document.getElementById('lastName').value = aTicket.inputLastName;
         document.getElementById('pesel').value = aTicket.inputPESEL;
-
         document.getElementById('arrivalTime').value = aTicketData.arrival;
         document.getElementById('departureTime').value = aTicketData.departure;
         document.getElementById('arrivalPlace').value = aTicketData.fromCity;
@@ -185,10 +142,10 @@
         document.getElementById('seatNumber').value = aTicketData.seatNumber;
         document.getElementById('date').value = aTicketData.date;
 
+        document.getElementById('idLotu').value = aTicketData.idLotu;
+
         $('#formid').submit();
       }
-
-
 
       var aWindow2 = Ext.create('Ext.window.Window', {
         title: 'Formularz zakupu biletu',
@@ -206,7 +163,6 @@
 
       return;
     }
-
 
 
     //------------------------------------------------------------------------------
@@ -237,46 +193,28 @@
         success: function(data) {
 
           var aWindow1;
-
           var divContainer = document.createElement("div");
-
           divContainer.style.display = "none";
 
-          //document.getElementsByTagName("body")[0].appendChild(divContainer);
-
           for (var i in data) {
-
-            console.log("data[i]");
-            console.log(data[i]);
-
 
             var div = document.createElement("div");
             div.className = "seat";
             div.minWidth = "100px";
             div.minHeight = "50px";
             div.background = " blue";
-
             div.innerHTML = "<i class=\"fas fa-chair\"></i></br>" + data[i].nr;;
-            //div.innerHTML += data[i].nr;
             div.style.zIndex = "100";
             div.id = data[i].nr;
-
             divContainer.appendChild(div);
 
-
-
-            //  var siedzenie;
             if (data[i].available == "0") {
-              //siedzenie = document.getElementById(data[i].nr);
               div.classList.add("freeSeat");
             } else {
-              //siedzenie = document.getElementById(data[i].nr);
               div.classList.add("noAvailable");
             }
 
           }
-
-
 
           aWindow1 = Ext.create('Ext.window.Window', {
             title: 'Wybierz miejsce',
@@ -286,23 +224,16 @@
             resizable: false,
             scrollable: true,
             html: divContainer.innerHTML,
-            // buttons: [{
-            //   text: 'Dostępne miejsca',
-            //   handler: dupa
-            // }]
           });
-          //console.log(aWindow1.body);
-          aWindow1.show();
 
+          aWindow1.show();
 
           for (var i = 0; i < aWindow1.body.el.dom.childNodes.length; i++) {
 
             aWindow1.body.el.dom.childNodes[i].addEventListener("click", function(e) {
-              //
+
               aParams.seatNumber = e.target.id;
-              //alert(aParams.seatNumber);
-              console.log("aParams!!!!!!!!!!!!!!!!!!!!");
-              console.log(aParams);
+
               if (e.target.className.indexOf("noAvailable") != -1) {
                 alert("To miejsce jest niedostępne");
                 return;
@@ -311,27 +242,6 @@
 
             }, false);
           }
-
-          //document.getElementById("2").;
-
-          //  var btn = document.createElement("BUTTON");
-          //  btn.innerHTML = "cancel";
-
-          //    document.getElementsByClassName("pulpit")[0].appendChild(btn);
-
-          //  var okno = document.getElementsByClassName("pulpit")[0];
-
-
-          //    var t = document.getElementById("darkLayer");
-          //  t.style.display = "block";
-
-          // btn.addEventListener("click", function() {
-          //   console.log(okno);
-          //   deleteWindow(okno);
-          // }, true);
-
-
-
         },
         error: function(data, status, er) {
           alert("error: " + data + " status: " + status + " er:" + er);
@@ -344,7 +254,7 @@
     showPlaneSchedule = function(aParams) {
       //------------------------------------------------------------------------------
 
-      var t = pobierzMiejsca(aParams);
+      pobierzMiejsca(aParams);
 
       return;
     }
@@ -354,12 +264,12 @@
     //------------------------------------------------------------------------------
     searchConnections = function() {
       //------------------------------------------------------------------------------
-      var usun = document.getElementsByClassName("connectionItem");
+      var aDelete = document.getElementsByClassName("connectionItem");
 
-      if (usun.length != 0) {
-        var len = usun.length;
+      if (aDelete.length != 0) {
+        var len = aDelete.length;
         for (var i = 0; i < len; i++) {
-          usun[0].parentNode.removeChild(usun[0]);
+          aDelete[0].parentNode.removeChild(aDelete[0]);
         }
       }
 
@@ -369,9 +279,6 @@
 
       var dateControl = document.querySelector('input[type="date"]');
       article.date = dateControl.value;
-      //  alert(article.date);
-      //var mapa = document.getElementById("mapa");
-      //mapa.style.display = "block";
 
       $.ajax({
         url: "http://localhost:8080/BiletyLotnicze//jsonservlet",
@@ -383,24 +290,14 @@
 
         success: function(data) {
 
-          console.log("dataqqqqqqqqqqqqqq");
-          console.log(data);
-          console.log("div");
-          console.log(div);
           var aUruluList = [];
-
-
           var sArrayOfIDsOfFlights = [];
-
 
           if (data.length == 0) {
             showMessageBox("Nie znaleziono żadnych połączeń!");
           }
 
-
           for (var i in data) {
-
-            console.log(data[i]);
 
             var div = document.createElement("div");
             div.id = data[i].IDLotu;
@@ -419,19 +316,15 @@
               toCity: data[i].inputToCity,
               arrival: data[i].arrival,
               departure: data[i].departure,
-              date: data[i].date
+              date: data[i].date,
+              idLotu: data[i].IDLotu
             };
-
 
             document.getElementById("added-articles").appendChild(div);
 
-
             div.addEventListener("click", function(e) {
-              console.log("eeeeee");
-              console.log(e);
               showPlaneSchedule(e.target.infoAttributes);
             }, false);
-
 
             var uluru = {};
             var aUluru = data[i].uluru.split(";");
@@ -451,8 +344,9 @@
       });
     }
 
-
+  //------------------------------------------------------------------------------
     showMap = function() {
+      //------------------------------------------------------------------------------
       document.getElementById('mapa1').style.display = "block";
       document.getElementById('location').style.display = "block";
     }
@@ -461,10 +355,7 @@
     initMap = function(aUruluList) {
       //------------------------------------------------------------------------------
 
-
       if (aUruluList == undefined) {
-
-
         var uluru = {
           lat: 52.135333,
           lng: 21.019154
@@ -479,25 +370,6 @@
         });
       } else {
 
-
-
-        console.log("aUruluList");
-        console.log(aUruluList);
-
-
-        var uluru = {};
-        uluru.lat = 52.00;
-        uluru.lng = 22.22;
-
-        uluru2 = {};
-        uluru2.lat = 51.00;
-        uluru2.lng = 21.00;
-
-        uluru3 = {};
-        uluru3.lat = 51.80;
-        uluru3.lng = 22.00;
-
-
         var map = new google.maps.Map(document.getElementById('mapa1'), {
           zoom: 4,
           center: {
@@ -507,15 +379,11 @@
         });
 
         var marker = [];
+
         for (var i = 0; i < aUruluList.length; i++) {
-
-
-          console.log("aUruluList[i]");
 
           aUruluList[i].lat = Number(aUruluList[i].lat);
           aUruluList[i].lng = Number(aUruluList[i].lng);
-          console.log(typeof aUruluList[i].lat + " !!!!!!!!!!!!!!!!!");
-          console.log(typeof aUruluList[i].lng + " !!!!!!!!!!!!!!!!!");
 
           uluru = {};
           uluru.lat = aUruluList[i].lat;
@@ -533,12 +401,12 @@
     //------------------------------------------------------------------------------
     function deleteConnections() {
       //------------------------------------------------------------------------------
-      var usun = document.getElementsByClassName("connectionItem");
-      var len = usun.length;
-      if (usun.length != 0) {
+      var aDelete = document.getElementsByClassName("connectionItem");
+      var len = aDelete.length;
+      if (aDelete.length != 0) {
 
         for (var i = 0; i < len; i++) {
-          usun[0].parentNode.removeChild(usun[0]);
+          aDelete[0].parentNode.removeChild(aDelete[0]);
         }
       }
       initMap(undefined);
@@ -549,14 +417,13 @@
     var deleteConnectionsItems = document.getElementById("deleteConnectionsItems");
     deleteConnectionsItems.addEventListener("click", deleteConnections, true);
 
-
-
-
     var submit = document.getElementById("submit")
     submit.addEventListener("click", searchConnections, true);
     submit.addEventListener("click", showMap, true);
-  </script>
 
+
+
+  </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBecyC_LYfo2Uo1GDB-RwKpyrBU5MYYgVc&callback=initMap">
   </script>
 

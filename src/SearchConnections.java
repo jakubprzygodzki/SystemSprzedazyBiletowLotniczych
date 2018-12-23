@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import art.copy.ArticleOLD;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -78,19 +78,17 @@ public class SearchConnections {
 			Connection aConn = aMySQLDriver.connect("jdbc:mysql://localhost:3306/flights?user=root&password=", null);
 			aStatement = aConn.createStatement();
 			String sSQLquestion = "";
-			
-			if(article.date.equals("")) {
-				
-				 sSQLquestion = "Select fromCity, toCity, departureTime, arrivalTime, available, ID_Lotu, DestinationLocal from connections where fromCity LIKE '%"
+
+			if (article.date.equals("")) {
+
+				sSQLquestion = "Select fromCity, toCity, departureTime, arrivalTime, available, ID_Lotu, DestinationLocal from connections where fromCity LIKE '%"
 						+ article.inputFromCity + "%' " + " and toCity LIKE '%" + article.inputToCity + "%'";
+			} else {
+				sSQLquestion = "Select fromCity, toCity, departureTime, arrivalTime, available, ID_Lotu, DestinationLocal from connections where fromCity LIKE '%"
+						+ article.inputFromCity + "%' " + " and toCity LIKE '%" + article.inputToCity
+						+ "%' and available = '" + article.date + "'";
 			}
-			else
-			{
-				sSQLquestion= "Select fromCity, toCity, departureTime, arrivalTime, available, ID_Lotu, DestinationLocal from connections where fromCity LIKE '%"
-						+ article.inputFromCity + "%' " + " and toCity LIKE '%" + article.inputToCity + "%' and available = '" + article.date + "'";
-			}
-			if (aStatement.execute(sSQLquestion)) 
-			{
+			if (aStatement.execute(sSQLquestion)) {
 
 				ResultSet aData = aStatement.getResultSet();
 

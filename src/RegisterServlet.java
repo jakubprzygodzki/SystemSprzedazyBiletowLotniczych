@@ -14,9 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import art.copy.ArticleOLD;
 
-public class RegisterServlet extends HttpServlet{
+
+public class RegisterServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -27,14 +29,12 @@ public class RegisterServlet extends HttpServlet{
 		if (br != null) {
 			json = br.readLine();
 		}
+
 		System.out.println(json);
-		
+
 		ObjectMapper mapper = new ObjectMapper();
 		RegisterData register = mapper.readValue(json, RegisterData.class);
-		
-		
-		
-		
+
 		// size of byte buffer to send file
 		final int BUFFER_SIZE = 414096;
 
@@ -43,55 +43,47 @@ public class RegisterServlet extends HttpServlet{
 		String dbUser = "root";
 		String dbPass = "";
 
-		Connection conn=null; // connection to the database
+		Connection conn = null; // connection to the database
 
-		//String req = request.getParameter("fromCity");
-			System.out.println("przerzucam do post");
-			System.out.println("request:" + register);
+		String sql = null;
+		java.sql.Statement stmt = null;
+		java.sql.Statement stmt2 = null;
 
-			String sql = null;
-			java.sql.Statement stmt = null;
-			java.sql.Statement stmt2 = null;
+		try {
+			Driver sterownik = new com.mysql.jdbc.Driver();
+			DriverManager.registerDriver(sterownik);
+			Connection conn1 = sterownik.connect("jdbc:mysql://localhost:3306/flights?user=root&password=", null);
 
-			try {
-				Driver sterownik = new com.mysql.jdbc.Driver();
-				DriverManager.registerDriver(sterownik);
-				Connection conn1 = sterownik.connect("jdbc:mysql://localhost:3306/flights?user=root&password=", null);
-		
-				stmt = conn1.createStatement();
-				stmt2 = conn1.createStatement();
+			stmt = conn1.createStatement();
+			stmt2 = conn1.createStatement();
 
-				String haslo = "";
-				System.out.println("start select register");
-				if (stmt.execute("Select login, email, password from uzytkownicy where login = '" + register.login + "'")) {
+			if (stmt.execute("Select login, email, password from uzytkownicy where login = '" + register.login + "'")) {
 
-					ResultSet zbior = stmt.getResultSet();
+				ResultSet zbior = stmt.getResultSet();
 
-					if(zbior.next()) {
-					
-						mapper.writeValue(response.getOutputStream(), "Uzytkownik o podanym loginie już istnieje!");
-					}
-					else {
-						 
-						boolean bStatement2 = stmt2.execute("INSERT INTO uzytkownicy (login, email, password) VALUES (" + "'" + register.login + "'"  + ", " + "'" + register.email+ "'"  + ", " + "'" + register.password + "'" + ")");
-						mapper.writeValue(response.getOutputStream(), "Zarejestrowano!");
-					}
-					System.out.println("pooo");
+				if (zbior.next()) {
+
+					mapper.writeValue(response.getOutputStream(), "Uzytkownik o podanym loginie już istnieje!");
+				} else {
+
+					boolean bStatement2 = stmt2.execute(
+							"INSERT INTO uzytkownicy (login, email, password) VALUES (" + "'" + register.login + "'"
+									+ ", " + "'" + register.email + "'" + ", " + "'" + register.password + "'" + ")");
+					mapper.writeValue(response.getOutputStream(), "Zarejestrowano!");
 				}
-
-			} catch (Exception e) {
-				System.out.println(e);
-			} finally {
-				try {
-					stmt.close();
-					stmt2.close();
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
+				System.out.println("pooo");
 			}
-			//return null;
 
-		
-		
+		} catch (Exception e) {
+			System.out.println(e);
+		} finally {
+			try {
+				stmt.close();
+				stmt2.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+
 	}
 }

@@ -20,7 +20,6 @@ import javax.sql.DataSource;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import art.copy.ArticleOLD;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,22 +62,19 @@ public class ServletSeats extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-
-
-
-	public LinkedList<Seats> connectToDB (String IDlotu) {
+	public LinkedList<Seats> connectToDB(String IDlotu) {
 
 		System.out.println("IDlotu:");
 		System.out.println(IDlotu);
-	LinkedList<Seats> listaSiedzen = new LinkedList<>();
+		LinkedList<Seats> listaSiedzen = new LinkedList<>();
 
-	final int BUFFER_SIZE = 414096;
+		final int BUFFER_SIZE = 414096;
 
-	String dbURL = "jdbc:mysql://localhost:3306/flights";
-	String dbUser = "root";
-	String dbPass = "";
+		String dbURL = "jdbc:mysql://localhost:3306/flights";
+		String dbUser = "root";
+		String dbPass = "";
 
-	Connection conn=null; // connection to the database
+		Connection conn = null; // connection to the database
 
 		String sql = null;
 
@@ -91,25 +87,19 @@ public class ServletSeats extends HttpServlet {
 			Connection conn1 = sterownik.connect("jdbc:mysql://localhost:3306/flights?user=root&password=", null);
 			stmt = conn1.createStatement();
 
-			System.out.println("0000");
-
-			if (stmt.execute("SELECT id, class, available FROM `" + IDlotu +"`")) {
+			if (stmt.execute("SELECT id, class, available FROM `" + IDlotu + "`")) {
 
 				ResultSet zbior = stmt.getResultSet();
-				System.out.println("11111");
+				
 				while (zbior.next()) {
 
-					System.out.println("2222");
 					Seats dane = new Seats();
 
-					dane.nr =zbior.getString("id");
-
+					dane.nr = zbior.getString("id");
 					dane.seatClass = zbior.getString("class");
-
 					dane.available = zbior.getString("available");
 
 					listaSiedzen.add(dane);
-
 				}
 				return listaSiedzen;
 			}
@@ -123,16 +113,13 @@ public class ServletSeats extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-		//return null;
 		return null;
 	}
 
-
-
+	
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		System.out.println("start");
 
 		List<Dane> daneToJS = new LinkedList<Dane>();
 
@@ -143,15 +130,12 @@ public class ServletSeats extends HttpServlet {
 			json = br.readLine();
 		}
 
-		System.out.println(json);
 
 		ObjectMapper mapper = new ObjectMapper();
 		Seats article = mapper.readValue(json, Seats.class);
 
 		response.setContentType("application/json");
 
-
-		System.out.println("article.nr" +article.nr);
 		LinkedList<Seats> lista = this.connectToDB(article.nr);
 
 		for (int i = 0; i < lista.size(); i++) {
@@ -162,7 +146,5 @@ public class ServletSeats extends HttpServlet {
 
 		mapper.writeValue(response.getOutputStream(), lista);
 	}
-
-
 
 }

@@ -6,25 +6,24 @@ body {
   display: block;
 }
 
-
-.logoWAT{
-	width: 110px;
-	height: 150px;
-	position: absolute;
-	right: 5%;
-	top: 2%;
+.logoWAT {
+  width: 110px;
+  height: 150px;
+  position: absolute;
+  right: 5%;
+  top: 2%;
 }
+
 #intro {
   background-color: #ccdcff;
   min-height: 28%;
--webkit-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.75);
--moz-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.75);
-box-shadow: 0px 6px 28px 0px rgba(0,0,0,0.75);
-
+  -webkit-box-shadow: 0px 6px 28px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px 6px 28px 0px rgba(0, 0, 0, 0.75);
+  box-shadow: 0px 6px 28px 0px rgba(0, 0, 0, 0.75);
 }
 
 #main-form input {
-min-width: 400px;
+  min-width: 400px;
   min-height: 50px;
   border-radius: 10px;
   margin-top: 50px;
@@ -34,9 +33,7 @@ min-width: 400px;
   min-width: 400px;
   min-height: 50px;
   border-radius: 10px;
-
 }
-
 
 h1 {
   text-align: center;
@@ -58,14 +55,11 @@ h1 {
   float: left;
   margin-top: 30px;
   margin-left: 70px;
-
 }
 
 #buttons button:hover {
   background-color: #6694ff;
 }
-
-
 
 #loginButton {
   height: 40px;
@@ -75,9 +69,11 @@ h1 {
   cursor: pointer;
   margin-top: 50px !important;
 }
+
 #loginButton:hover {
   background-color: #6694ff;
 }
+
 article {
   margin: auto;
   min-height: 300px;
@@ -127,9 +123,8 @@ article {
   margin: 20px;
   float: left;
   text-align: center;
-  font-size:20px;
+  font-size: 20px;
   border-radius: 10px;
-
 }
 
 .seat.freeSeat {
@@ -182,63 +177,63 @@ article {
   border-radius: 150px;
 }
 
-#location{
-	height: 350px;
+#location {
+  height: 350px;
   width: 350px;
   display: none;
   position: absolute;
-    left: 30px;
+  left: 30px;
   top: 230px;
-  font-size:18px;
+  font-size: 18px;
   color: #003099;
 }
 
-#logoff{
+#logoff {
   background-color: #ccdcff;
   border: 0px solid #ccdcff;
   font-size: 18px;
   transition: 0.2s linear;
-  	position: absolute;
-	right: 15%;
-	top: 2%;
+  position: absolute;
+  right: 15%;
+  top: 2%;
 }
 
-#logoff:hover{
+#logoff:hover {
   font-size: 19px;
   transition: 0.2s linear;
-  color:#003099;
+  color: #003099;
 }
 
-#registartion{
-	  background-color: #ccdcff;
+#registartion {
+  background-color: #ccdcff;
   border: 0px solid #ccdcff;
   font-size: 18px;
   transition: 0.2s linear;
-  	position: absolute;
-	right: 22%;
-	top: 2%;
+  position: absolute;
+  right: 22%;
+  top: 2%;
 }
 
-#registartion:hover{
+#registartion:hover {
   font-size: 19px;
   transition: 0.2s linear;
-  color:#003099;
+  color: #003099;
 }
 
-#login{
-	  background-color: #ccdcff;
+#login {
+  background-color: #ccdcff;
   border: 0px solid #ccdcff;
   font-size: 18px;
   transition: 0.2s linear;
-  	position: absolute;
-	right: 15%;
-	top: 2%;
+  position: absolute;
+  right: 15%;
+  top: 2%;
 }
 
-#login:hover{
+#login:hover {
   font-size: 19px;
   transition: 0.2s linear;
-  color:#003099;
+  color: #003099;
 }
 
 .pulpit {
@@ -252,15 +247,13 @@ article {
   z-index: 99;
   margin-left: -200px;
   border: 3px solid black;
-
 }
 
-#added-articles{
-	margin-top: 100px;
-	margin-bottom: 100px;
+#added-articles {
+  margin-top: 100px;
+  margin-bottom: 100px;
 }
 
-
-#Logform{
+#Logform {
   margin-top: 100px;
 }
