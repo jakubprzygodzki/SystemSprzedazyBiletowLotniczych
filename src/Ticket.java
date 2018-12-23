@@ -8,6 +8,8 @@ public class Ticket {
 	public String departureTime;
 	public String arrivalPlace;
 	public String departurePlace;
+	public String seatNumber;
+	public String date;
 	
 
 }

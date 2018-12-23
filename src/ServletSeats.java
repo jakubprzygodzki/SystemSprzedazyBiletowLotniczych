@@ -20,7 +20,7 @@ import javax.sql.DataSource;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import art.copy.Article;
+import art.copy.ArticleOLD;
 
 import java.io.BufferedReader;
 import java.io.IOException;

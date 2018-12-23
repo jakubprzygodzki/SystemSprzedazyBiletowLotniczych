@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import art.copy.Article;
+import art.copy.ArticleOLD;
 
 public class RegisterServlet extends HttpServlet{
 

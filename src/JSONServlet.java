@@ -13,43 +13,35 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.codehaus.jackson.map.ObjectMapper;
 
-import art.copy.Article;
+import art.copy.ArticleOLD;
 
 public class JSONServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
 
-	/***************************************************
-	 * URL: /jsonservlet doPost(): receives JSON data, parse it, map it and send
-	 * back as JSON
-	 ****************************************************/
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		
-		List<Dane> daneToJS = new LinkedList<Dane>();
 
-		BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
-		String json = "";
+		BufferedReader aBr = new BufferedReader(new InputStreamReader(request.getInputStream()));
+		String sInputData = "";
 		
-		if (br != null) {
-			json = br.readLine();
+		if (aBr != null)
+		{
+			sInputData = aBr.readLine();
 		}
-		System.out.println("json!!!!!!!!!!!!!!!");
-		System.out.println(json);
+		
+		
+		System.out.println(sInputData);
+
 		ObjectMapper mapper = new ObjectMapper();
-		Article article = mapper.readValue(json, Article.class);
+		Dane aConnectionUserParams = mapper.readValue(sInputData, Dane.class);
 	
 		response.setContentType("application/json");
 
+		SearchConnections connection = new SearchConnections();
 
-		ConnectionToDB connection = new ConnectionToDB();
-
-		LinkedList<Dane> lista = connection.connectToDB(article);
-
-		for (int i = 0; i < lista.size(); i++) {
-			daneToJS.add(lista.get(i));
-		}
+		LinkedList<Dane> lista = connection.connectToDB(aConnectionUserParams);
 
 		mapper.writeValue(response.getOutputStream(), lista);
 

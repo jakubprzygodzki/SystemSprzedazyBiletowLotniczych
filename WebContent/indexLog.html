@@ -37,9 +37,9 @@
     <h1>BILETY LOTNICZE</h1>
     <h1>-WAT AIRLINES-</h1>
 
-   <form action="http://localhost:8080/BiletyLotnicze/wyloguj" method="get">
-    <input id="logoff" type="submit" value="Wyloguj">
-  </form>
+    <form action="http://localhost:8080/BiletyLotnicze/wyloguj" method="get">
+      <input id="logoff" type="submit" value="Wyloguj">
+    </form>
 
   </div>
 
@@ -64,28 +64,26 @@
 
       <div id="buttons">
         <button id="submit" type="submit">Szukaj</button>
-        <button id="deleteConnectionsItems" type="submit">Cancel</button>
+        <button id="deleteConnectionsItems">Cancel</button>
       </div>
     </div>
 
   </article>
   <form action="http://localhost:8080/BiletyLotnicze//dowloadTicket" method='POST' id='formid'>
     <input type='hidden' value='' name='name' id='name' />
-    <input type='hidden' value=' ' name='lastname' id='lastName' />
-    <input type='hidden' value=' ' name='lastname' id='pesel' />
-    <input type='hidden' value=' ' name='lastname' id='arrivalTime' />
-    <input type='hidden' value=' ' name='lastname' id='departureTime' />
-    <input type='hidden' value=' ' name='lastname' id='arrivalPlace' />
-    <input type='hidden' value=' ' name='lastname' id='departurePlace' />
-    <input type='hidden' value=' ' name='lastname' id='seatNumber' />
+    <input type='hidden' value=' ' name='lastName' id='lastName' />
+    <input type='hidden' value=' ' name='pesel' id='pesel' />
+    <input type='hidden' value=' ' name='arrivalTime' id='arrivalTime' />
+    <input type='hidden' value=' ' name='departureTime' id='departureTime' />
+    <input type='hidden' value=' ' name='arrivalPlace' id='arrivalPlace' />
+    <input type='hidden' value=' ' name='departurePlace' id='departurePlace' />
+    <input type='hidden' value=' ' name='seatNumber' id='seatNumber' />
+    <input type='hidden' value=' ' name='date' id='date' />
   </form>
 
-<h3 id="location" > Lokalizacja docelowa: </h3>
+  <h3 id="location"> Lokalizacja docelowa: </h3>
   <div id="mapa1"></div>
-  <div id="mapa2"></div>
-
   <div id="added-articles" class="table">
-
   </div>
 
   <!--  <head>
@@ -100,6 +98,13 @@
     </body> -->
 
   <script>
+
+  showMessageBox = function(sText) {
+    Ext.Msg.alert('Uwaga!', sText, null);
+  }
+
+
+
     //------------------------------------------------------------------------------
     showBuyTicketForm = function(aTicketData, aWindow1) {
       //------------------------------------------------------------------------------
@@ -116,6 +121,7 @@
 
       var h3ArrivalTime = document.createElement("h3");
       var h3DepartureTime = document.createElement("h3");
+      var h3Date = document.createElement("h3");
       var h4Imie = document.createElement("h4");
       var h4Nazwisko = document.createElement("h4");
       var h4Pesel = document.createElement("h4");
@@ -123,9 +129,10 @@
       h3.innerHTML = "Nr miesjca: " + aTicketData.seatNumber + "</br";
       h3Arrival.innerHTML = "Skąd: " + aTicketData.fromCity;
       h3Departure.innerHTML = "Dokąd: " + aTicketData.toCity;
-      h3ArrivalTime.innerHTML = "Godzina odlotu: " + aTicketData.odlot;
+      h3ArrivalTime.innerHTML = "Godzina odlotu: " + aTicketData.departure;
+      h3DepartureTime.innerHTML = "Godzina przylotu: " + aTicketData.arrival;
+      h3Date.innerHTML = "Data lotu: " + aTicketData.date;
 
-      h3DepartureTime.innerHTML = "Godzina przylotu: " + aTicketData.odlot;
       h4Imie.innerHTML = "Imię";
       h4Nazwisko.innerHTML = "Nazwisko";
       h4Pesel.innerHTML = "PESEL";
@@ -138,13 +145,15 @@
       input2.id = "inputLastName";
       input3.id = "inputPESEL";
 
-
-      div.appendChild(h3);
-      div.appendChild(h3Arrival);
-      div.appendChild(h3Departure);
-
+      div.appendChild(h3Date);
       div.appendChild(h3ArrivalTime);
       div.appendChild(h3DepartureTime);
+
+      div.appendChild(h3Arrival);
+      div.appendChild(h3Departure);
+      div.appendChild(h3);
+
+
 
       div.appendChild(h4Imie);
       div.appendChild(input1);
@@ -156,7 +165,7 @@
       div.appendChild(input3);
 
 
-      dupa2 = function() {
+      sendTicketData = function() {
 
         var aTicket = new Object();
 
@@ -169,11 +178,12 @@
         document.getElementById('lastName').value = aTicket.inputLastName;
         document.getElementById('pesel').value = aTicket.inputPESEL;
 
-        document.getElementById('arrivalTime').value = aTicketData.odlot;
-        document.getElementById('departureTime').value = aTicketData.odlot;
+        document.getElementById('arrivalTime').value = aTicketData.arrival;
+        document.getElementById('departureTime').value = aTicketData.departure;
         document.getElementById('arrivalPlace').value = aTicketData.fromCity;
         document.getElementById('departurePlace').value = aTicketData.toCity;
         document.getElementById('seatNumber').value = aTicketData.seatNumber;
+        document.getElementById('date').value = aTicketData.date;
 
         $('#formid').submit();
       }
@@ -182,13 +192,13 @@
 
       var aWindow2 = Ext.create('Ext.window.Window', {
         title: 'Formularz zakupu biletu',
-        height: 600,
+        height: 500,
         width: 500,
         layout: 'fit',
         html: div.innerHTML,
         buttons: [{
           text: 'Pobierz bilet',
-          handler: dupa2
+          handler: sendTicketData
         }]
       });
 
@@ -291,6 +301,8 @@
               //
               aParams.seatNumber = e.target.id;
               //alert(aParams.seatNumber);
+              console.log("aParams!!!!!!!!!!!!!!!!!!!!");
+              console.log(aParams);
               if (e.target.className.indexOf("noAvailable") != -1) {
                 alert("To miejsce jest niedostępne");
                 return;
@@ -331,33 +343,13 @@
     //------------------------------------------------------------------------------
     showPlaneSchedule = function(aParams) {
       //------------------------------------------------------------------------------
-      //var sID = aParams.flightID;
-      // var div = document.createElement("div");
-      // div.className = "pulpit";
-      // var divMiejsce = document.createElement("div");
-      // divMiejsce.className = "pulpit";
-      // divMiejsce.innerHTML = "asdas";
-      //
-      // document.getElementsByTagName("body")[0].appendChild(div);
-      // console.log("aParams");
-      // console.log(aParams);
+
       var t = pobierzMiejsca(aParams);
 
       return;
     }
 
-    //------------------------------------------------------------------------------
-    deleteConnectionsItems = function() {
-      //------------------------------------------------------------------------------
-      var usun = document.getElementsByClassName("connectionItem");
-      var len = usun.length;
-      if (usun.length != 0) {
 
-        for (var i = 0; i < len; i++) {
-          usun[0].parentNode.removeChild(usun[0]);
-        }
-      }
-    }
 
     //------------------------------------------------------------------------------
     searchConnections = function() {
@@ -395,8 +387,17 @@
           console.log(data);
           console.log("div");
           console.log(div);
+          var aUruluList = [];
+
 
           var sArrayOfIDsOfFlights = [];
+
+
+          if (data.length == 0) {
+            showMessageBox("Nie znaleziono żadnych połączeń!");
+          }
+
+
           for (var i in data) {
 
             console.log(data[i]);
@@ -410,32 +411,38 @@
             div.style.marginTop = "15px";
             div.className = "connectionItem";
             div.style.transition = "all 0.7s";
-            div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " " + data[i].odlot + " - " + data[i].odlot + " , id: " + data[i].IDLotu;
+            div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " (" + data[i].departure + " - " + data[i].arrival + "), nr lotu: " + data[i].IDLotu;
+
             div.infoAttributes = {
               flightID: data[i].IDLotu,
               fromCity: data[i].inputFromCity,
               toCity: data[i].inputToCity,
-              arrival: data[i].odlot
+              arrival: data[i].arrival,
+              departure: data[i].departure,
+              date: data[i].date
             };
 
 
             document.getElementById("added-articles").appendChild(div);
 
+
             div.addEventListener("click", function(e) {
-              console.log("e");
-              console.log(e.target.infoAttributes);
-              //alert(e.target.id);
+              console.log("eeeeee");
+              console.log(e);
               showPlaneSchedule(e.target.infoAttributes);
-            }, false)
+            }, false);
+
+
+            var uluru = {};
+            var aUluru = data[i].uluru.split(";");
+            uluru.lat = aUluru[1];
+            uluru.lng = aUluru[0];
+
+            aUruluList.push(uluru);
 
           }
 
-
-          //data[i].inputFromCity;
-          //data[i].inputToCity;
-
-
-
+          initMap(aUruluList);
 
         },
         error: function(data, status, er) {
@@ -446,31 +453,16 @@
 
 
     showMap = function() {
-
-      var sFrom = $('#inputFromCity').val();
-      var sTo = $('#inputToCity').val();
-
-
-      var uluru = {};
-      var t1 = Math.random() * 51;
-      var t2 = Math.random() * 51;
-
-      uluru.lat = t1.toPrecision(5);
-      uluru.lng = t2.toPrecision(5);
-
-
-      initMap(uluru);
-
       document.getElementById('mapa1').style.display = "block";
       document.getElementById('location').style.display = "block";
     }
 
     //------------------------------------------------------------------------------
-    initMap = function(uluru) {
+    initMap = function(aUruluList) {
       //------------------------------------------------------------------------------
 
 
-      if (uluru == undefined) {
+      if (aUruluList == undefined) {
 
 
         var uluru = {
@@ -486,32 +478,79 @@
           map: map
         });
       } else {
-        // var uluru = {
-        //   lat: 52.135333,
-        //   lng: 21.019154
-        // };
-        uluru.lat = Number(uluru.lat);
-        uluru.lng = Number(uluru.lng);
+
+
+
+        console.log("aUruluList");
+        console.log(aUruluList);
+
+
+        var uluru = {};
+        uluru.lat = 52.00;
+        uluru.lng = 22.22;
+
+        uluru2 = {};
+        uluru2.lat = 51.00;
+        uluru2.lng = 21.00;
+
+        uluru3 = {};
+        uluru3.lat = 51.80;
+        uluru3.lng = 22.00;
 
 
         var map = new google.maps.Map(document.getElementById('mapa1'), {
-          zoom: 9,
-          center: uluru
+          zoom: 4,
+          center: {
+            lat: 53.00,
+            lng: 21.00
+          }
         });
-        var marker = new google.maps.Marker({
-          position: uluru,
-          map: map
-        });
+
+        var marker = [];
+        for (var i = 0; i < aUruluList.length; i++) {
+
+
+          console.log("aUruluList[i]");
+
+          aUruluList[i].lat = Number(aUruluList[i].lat);
+          aUruluList[i].lng = Number(aUruluList[i].lng);
+          console.log(typeof aUruluList[i].lat + " !!!!!!!!!!!!!!!!!");
+          console.log(typeof aUruluList[i].lng + " !!!!!!!!!!!!!!!!!");
+
+          uluru = {};
+          uluru.lat = aUruluList[i].lat;
+          uluru.lng = aUruluList[i].lng;
+
+          marker[i] = new google.maps.Marker({
+            position: uluru,
+            map: map
+          });
+        }
       }
-      //  document.getElementById('mapa1').style.display = "block";
     }
 
 
+    //------------------------------------------------------------------------------
+    function deleteConnections() {
+      //------------------------------------------------------------------------------
+      var usun = document.getElementsByClassName("connectionItem");
+      var len = usun.length;
+      if (usun.length != 0) {
+
+        for (var i = 0; i < len; i++) {
+          usun[0].parentNode.removeChild(usun[0]);
+        }
+      }
+      initMap(undefined);
+
+    }
+
+
+    var deleteConnectionsItems = document.getElementById("deleteConnectionsItems");
+    deleteConnectionsItems.addEventListener("click", deleteConnections, true);
 
 
 
-    var deleteConnectionsItems = document.getElementById("deleteConnectionsItems")
-    deleteConnectionsItems.addEventListener("click", deleteConnectionsItems, true);
 
     var submit = document.getElementById("submit")
     submit.addEventListener("click", searchConnections, true);

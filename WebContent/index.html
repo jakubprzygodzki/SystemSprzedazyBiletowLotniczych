@@ -33,7 +33,7 @@
 
 
   </div>
-
+v
   <article>
 
     <div id="darkLayer" class="darkClass" style="display:none"></div>
@@ -119,7 +119,8 @@
       var article = new Object();
       article.inputFromCity = $('#inputFromCity').val();
       article.inputToCity = $('#inputToCity').val();
-
+      var dateControl = document.querySelector('input[type="date"]');
+      article.date = dateControl.value;
       //var mapa = document.getElementById("mapa");
       //mapa.style.display = "block";
 
@@ -150,7 +151,8 @@
             div.className = "connectionItemNoLogin";
             div.style.transition = "all 0.7s";
             div.title = "Musisz być zalogowany, aby przeglądać informacje o połączeniu";
-            div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " " + data[i].odlot + " - " + data[i].odlot;
+            div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " (" + data[i].departure + " - " + data[i].arrival + "), nr lotu: " + data[i].IDLotu;
+            
             document.getElementById("added-articles").appendChild(div);
 
             //  var aConnectionItemNoLogin = document.getElementsByClassName("connectionItemNoLogin");

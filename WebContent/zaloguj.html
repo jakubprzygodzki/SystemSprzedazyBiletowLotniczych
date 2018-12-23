@@ -2,6 +2,12 @@
 <html lang="pl">
 
 <head>
+
+  <link rel="stylesheet" type="text/css" href="extjs-master/build/classic/theme-classic/resources/theme-classic-all.css" />
+  <script type="text/javascript" src="extjs-master/build/ext-all.js"> </script>
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
+
   <meta charset="UTF-8">
   <title>Przykład 37 - Minifikacja i konkatenacja skryptów</title>
   <link rel="stylesheet" href="css/main.css" />
@@ -9,14 +15,23 @@
 
 <body>
 
+  <div id="intro">
+    <img class="logoWAT" alt="WATLOGO" src="img/watLogo.jpg">
+    <h1>BILETY LOTNICZE</h1>
+    <h1>-WAT AIRLINES- </h1>
+  </div>
+
+
   <article>
     <div id="Logform">
 
       <div id="main-formLog">
         <form method="post" action="login"><br /><br />
-          <h4>Email ID</h4><input type="text" name="login" /><br /><br />
-          <h4>Password</h4><input type="text" name="haslo" /><br />
-          <input type="submit" value="login" />
+          <h4 >Email ID</h4>
+          <input type="text" name="login" /><br /><br />
+          <h4>Password</h4>
+          <input type="text" name="password" /><br />
+          <input id="loginButton" type="submit" value="login" />
         </form>
       </div>
     </div>

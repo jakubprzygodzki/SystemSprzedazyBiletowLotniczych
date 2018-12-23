@@ -11,8 +11,8 @@ public class Login extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        String login = request.getParameter("email");
-        String haslo = request.getParameter("haslo");
+        String login = request.getParameter("login");
+        String haslo = request.getParameter("password");
         
         
         System.out.println("login"+login);

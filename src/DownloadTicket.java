@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.codehaus.jackson.map.ObjectMapper;
 //import org.omg.CORBA_2_3.portable.OutputStream;
 
-import art.copy.Article;
+import art.copy.ArticleOLD;
 
 public class DownloadTicket extends HttpServlet {
 	
@@ -57,18 +57,49 @@ public class DownloadTicket extends HttpServlet {
 //	    }
 
 	    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-	                                                                                       IOException {
-			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
-			String json = "";
-			
-			if (br != null) {
-				json = br.readLine();
-			}
-			
+	                                                                                       IOException 
+	    
+	    {
+	    	
+	    	
+	    	System.out.println("request " + request.getParameter("seatNumber"));
+	    	System.out.println("request " + request.getParameter("pesel"));
+	    	System.out.println("request " + request.getParameter("arrivalTime"));
+	    	System.out.println("request " + request.getParameter("departureTime"));
+	    	System.out.println("request " + request.getParameter("name"));
+	    	System.out.println("request " + request.getParameter("lastName"));
+	    	System.out.println("request " + request.getParameter("arrivalPlace"));
+	    	System.out.println("request " + request.getParameter("departurePlace"));
+	    	
+	    	
+	    	String seatNumber = request.getParameter("seatNumber");
+	    	String pesel = request.getParameter("pesel");
+	    	String arrivalTime = request.getParameter("arrivalTime");
+	    	String departureTime = request.getParameter("departureTime");
+	    	String name = request.getParameter("name");
+	    	String lastName =request.getParameter("lastName");
+	    	String arrivalPlace = request.getParameter("arrivalPlace");
+	    	String departurePlace = request.getParameter("departurePlace");
+	    	String date = request.getParameter("date");
+	    	
+//			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+//			String json = "";
+//			
+//			if (br != null)
+//			{
+//				json = br.readLine();
+//			}
+//			
+//			System.out.println("json " + json);
 //			ObjectMapper mapper = new ObjectMapper();
-			Ticket ticket = new Ticket(); //= mapper.readValue(json, Ticket.class);
+			//
+			//ObjectMapper mapper = new ObjectMapper();
 			
-			System.out.println("json " + json);
+			//Ticket aTicket = mapper.readValue(json, Ticket.class);
+			
+			//System.out.println("aTicket " + aTicket.pesel);
+			//System.out.println("aTicket " + aTicket.arrivalPlace);
+
 	            
 	    	response.setContentType("text/plain");
 	        response.setHeader("Content-Disposition", "attachment;filename=downloadname.txt");
@@ -80,14 +111,15 @@ public class DownloadTicket extends HttpServlet {
 	        		"ul. Wojskowa 1/2\r\n" + 
 	        		"00-001 Warszawa\r\n" + 
 	        		"\r\n" + 
-//	        		"Imie:\r\n" + " " + ticket.name +
-//	        		"Nazwisko:\r\n" + " " + ticket.lastName+ 
-//	        		"PESEL:\r\n" + " " + ticket.pesel + 
-//	        		"\r\n" + 
-//	        		"Miejescowość odlotu:\r\n" + " " + ticket.arrivalPlace + 
-//	        		"Miejescowość przylotu:\r\n" + " " + ticket.departurePlace + 
-//	        		"Odlot: \r\n" + " " + ticket.arrivalTime + 
-//	        		"Przylot:\r\n" + " " + ticket.departureTime + 
+	        		"Imie:\r\n" + " " + name +"\r\n" +
+	        		"Nazwisko:\r\n" + " " + lastName + "\r\n" +
+	        		"PESEL:\r\n" + " " + pesel + "\r\n" +
+	        		"\r\n" + 
+	        		"Miejscowość odlotu:\r\n" + " " + departurePlace + "\r\n" +
+	        		"Miejscowość przylotu:\r\n" + " " + arrivalPlace + "\r\n" +
+	        		"Godzina odlotu: \r\n" + " " + arrivalTime + "\r\n" +
+	        		"Godzina przylotu:\r\n" + " " + departureTime + "\r\n" +
+	        		"Data lotu:\r\n" + " " + date + "\r\n" +
 	        		"\r\n" + 
 	        		"Cena: 350zł ;";
 	        
