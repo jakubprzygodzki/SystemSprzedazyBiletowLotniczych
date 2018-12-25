@@ -14,7 +14,7 @@
   <link rel="stylesheet" type="text/css" href="extjs-master/build/classic/theme-classic/resources/theme-classic-all.css" />
   <script type="text/javascript" src="extjs-master/build/ext-all.js"> </script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
-  <title>Przykład 37 - Minifikacja i konkatenacja skryptów</title>
+  <title>Bilety lotnicze</title>
   <link rel="stylesheet" href="css/main.css" />
   <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 </head>
@@ -22,8 +22,9 @@
 <body>
   <div id="intro">
     <img class="logoWAT" alt="WATLOGO" src="img/watLogo.jpg">
-    <h1>BILETY LOTNICZE</h1>
+    <h1 id="app_title">BILETY LOTNICZE</h1>
     <h1>-WAT AIRLINES-</h1>
+    <button id="language">Przełącz na angielski</button>
     <form action="http://localhost:8080/BiletyLotnicze/wyloguj" method="get">
       <input id="logoff" type="submit" value="Wyloguj">
     </form>
@@ -59,6 +60,7 @@
     <input type='hidden' value=' ' name='seatNumber' id='seatNumber' />
     <input type='hidden' value=' ' name='date' id='date' />
     <input type='hidden' value=' ' name='idLotu' id='idLotu' />
+    <input type='hidden' value=' ' name='lang' id='lang' />
   </form>
 
   <h3 id="location"> Lokalizacja docelowa: </h3>
@@ -66,11 +68,125 @@
   <div id="added-articles" class="table">
   </div>
 
+
+  <script src="js/texts.js"></script>
+
   <script>
+    //------------------------------------------------------------------------------
+    function getString(sKey, sLang) {
+      //------------------------------------------------------------------------------
+      for (var key in aLanguageProperties) {
+        if (key == sKey) {
+
+          if (sLang === "PL") {
+            return aLanguageProperties[key].PL;
+          }
+          if (sLang === "EN") {
+            return aLanguageProperties[key].EN;
+          }
+        }
+      }
+    }
+
+    //------------------------------------------------------------------------------
+    function setLang(bChanged) {
+      //------------------------------------------------------------------------------
+      if (bChanged) {
+        if (CURRENT_LANG.lang == "PL") {
+          CURRENT_LANG.lang = "EN";
+        } else if (CURRENT_LANG.lang == "EN") {
+          CURRENT_LANG.lang = "PL";
+        }
+      }
+
+      Ext.util.Cookies.set('jezyk', CURRENT_LANG.lang);
+
+      var sLang = CURRENT_LANG.lang;
+
+      var aTitle = document.getElementById("app_title");
+      if (aTitle) {
+        aTitle.innerHTML = getString("app_title", sLang);
+      }
+
+      var aRegistration = document.getElementById("registartion");
+      if (aRegistration) {
+        aRegistration.innerHTML = getString("registartion", sLang);
+      }
+      var aLanguage = document.getElementById("language");
+      if (aLanguage) {
+        aLanguage.innerHTML = getString("language", sLang);
+      }
+
+
+      var aLogin = document.getElementById("login");
+      if (aLogin) {
+        aLogin.value = getString("login", sLang);
+      }
+
+
+      var aInputFromCity = document.getElementById("inputFromCity");
+      if (aInputFromCity) {
+        aInputFromCity.placeholder = getString("inputFromCity", sLang);
+      }
+
+
+      var aInputToCity = document.getElementById("inputToCity");
+      if (aInputToCity) {
+        aInputToCity.placeholder = getString("inputToCity", sLang);
+      }
+
+
+      var aSearchBtn = document.getElementById("submit");
+      if (aSearchBtn) {
+        aSearchBtn.innerHTML = getString("button_Search", sLang);
+
+      }
+
+      var aCancel = document.getElementById("cancel1");
+      if (aCancel) {
+        aCancel.innerHTML = getString("button_Cancel", sLang);
+      }
+
+      var aPopupTologin = document.getElementById("popupTologin");
+      if (aPopupTologin) {
+        aPopupTologin.title = getString("popupTologin", sLang);
+      }
+
+      var aLogOff = document.getElementById("logoff");
+      if (aLogOff) {
+        aLogOff.value = getString("logoff", sLang);
+      }
+
+      var aLocation = document.getElementById("location");
+      if (aLocation) {
+        aLocation.innerHTML = getString("location", sLang);
+      }
+      return;
+    }
+
+
+
+
+    (function() {
+      var aCookieLang = Ext.util.Cookies.get('jezyk');
+      CURRENT_LANG.lang = aCookieLang;
+      setLang(false);
+    })();
+
+    var aLanguage = document.getElementById("language");
+    aLanguage.addEventListener("click", function() {
+      setLang(true);
+    }, true);
+
+
+
+    // var aLanguage = document.getElementById("language");
+    // aLanguage.addEventListener("click", check, true);
+
     //------------------------------------------------------------------------------
     showMessageBox = function(sText) {
       //------------------------------------------------------------------------------
-      Ext.Msg.alert('Uwaga!', sText, null);
+      Ext.Msg.alert(getString("Warning", CURRENT_LANG.lang), sText, null);
     }
 
 
@@ -92,16 +208,16 @@
       var h4Nazwisko = document.createElement("h4");
       var h4Pesel = document.createElement("h4");
 
-      h3.innerHTML = "Nr miesjca: " + aTicketData.seatNumber + "</br";
-      h3Arrival.innerHTML = "Skąd: " + aTicketData.fromCity;
-      h3Departure.innerHTML = "Dokąd: " + aTicketData.toCity;
-      h3ArrivalTime.innerHTML = "Godzina odlotu: " + aTicketData.departure;
-      h3DepartureTime.innerHTML = "Godzina przylotu: " + aTicketData.arrival;
-      h3Date.innerHTML = "Data lotu: " + aTicketData.date;
+      h3.innerHTML = getString("SeatNumber", CURRENT_LANG.lang) + "<u>" + aTicketData.seatNumber + "</u>" + "</br";
+      h3Arrival.innerHTML = getString("Start", CURRENT_LANG.lang) + "<u>" + aTicketData.fromCity + "</u>";
+      h3Departure.innerHTML = getString("Destination", CURRENT_LANG.lang) + "<u>" + aTicketData.toCity + "</u>" + "</u>";
+      h3ArrivalTime.innerHTML = getString("StartHour", CURRENT_LANG.lang) + "<u>" + aTicketData.departure + "</u>";
+      h3DepartureTime.innerHTML = getString("DestinationHour", CURRENT_LANG.lang) + "<u>" + aTicketData.arrival + "</u>";
+      h3Date.innerHTML = getString("travelDate", CURRENT_LANG.lang) + "<u>" + aTicketData.date + "</u>";
 
-      h4Imie.innerHTML = "Imię";
-      h4Nazwisko.innerHTML = "Nazwisko";
-      h4Pesel.innerHTML = "PESEL";
+      h4Imie.innerHTML = getString("name", CURRENT_LANG.lang) ;
+      h4Nazwisko.innerHTML = getString("lastName", CURRENT_LANG.lang);
+      h4Pesel.innerHTML = getString("pesel", CURRENT_LANG.lang);
 
       var input1 = document.createElement("input");
       var input2 = document.createElement("input");
@@ -141,20 +257,20 @@
         document.getElementById('departurePlace').value = aTicketData.toCity;
         document.getElementById('seatNumber').value = aTicketData.seatNumber;
         document.getElementById('date').value = aTicketData.date;
-
         document.getElementById('idLotu').value = aTicketData.idLotu;
+        document.getElementById('lang').value = CURRENT_LANG.lang;
 
         $('#formid').submit();
       }
 
       var aWindow2 = Ext.create('Ext.window.Window', {
-        title: 'Formularz zakupu biletu',
+        title: getString("formTicket", CURRENT_LANG.lang),
         height: 500,
         width: 500,
         layout: 'fit',
         html: div.innerHTML,
         buttons: [{
-          text: 'Pobierz bilet',
+          text: getString("downloadTicket", CURRENT_LANG.lang),
           handler: sendTicketData
         }]
       });
@@ -217,7 +333,7 @@
           }
 
           aWindow1 = Ext.create('Ext.window.Window', {
-            title: 'Wybierz miejsce',
+            title: getString("chooseSeat", CURRENT_LANG.lang),
             height: 600,
             width: 350,
             layout: 'fit',
@@ -235,7 +351,7 @@
               aParams.seatNumber = e.target.id;
 
               if (e.target.className.indexOf("noAvailable") != -1) {
-                alert("To miejsce jest niedostępne");
+                alert(getString("noAvailable", CURRENT_LANG.lang));
                 return;
               }
               showBuyTicketForm(aParams, aWindow1);
@@ -253,7 +369,6 @@
     //------------------------------------------------------------------------------
     showPlaneSchedule = function(aParams) {
       //------------------------------------------------------------------------------
-
       pobierzMiejsca(aParams);
 
       return;
@@ -294,7 +409,7 @@
           var sArrayOfIDsOfFlights = [];
 
           if (data.length == 0) {
-            showMessageBox("Nie znaleziono żadnych połączeń!");
+            showMessageBox(getString("No_connection_found", CURRENT_LANG.lang));
           }
 
           for (var i in data) {
@@ -308,7 +423,8 @@
             div.style.marginTop = "15px";
             div.className = "connectionItem";
             div.style.transition = "all 0.7s";
-            div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " (" + data[i].departure + " - " + data[i].arrival + "), nr lotu: " + data[i].IDLotu;
+            div.innerHTML = getString("from", CURRENT_LANG.lang) + "<b>" + data[i].inputFromCity + "</b>" + " " + getString("to", CURRENT_LANG.lang) + " <b>" + data[i].inputToCity + "</b>" + " (" + data[i].departure + " - " + data[i].arrival +
+              "), " + getString("flightNum", CURRENT_LANG.lang) + data[i].IDLotu;
 
             div.infoAttributes = {
               flightID: data[i].IDLotu,
@@ -344,7 +460,7 @@
       });
     }
 
-  //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
     showMap = function() {
       //------------------------------------------------------------------------------
       document.getElementById('mapa1').style.display = "block";
@@ -420,9 +536,6 @@
     var submit = document.getElementById("submit")
     submit.addEventListener("click", searchConnections, true);
     submit.addEventListener("click", showMap, true);
-
-
-
   </script>
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBecyC_LYfo2Uo1GDB-RwKpyrBU5MYYgVc&callback=initMap">
   </script>

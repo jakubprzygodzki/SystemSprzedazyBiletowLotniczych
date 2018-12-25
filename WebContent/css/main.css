@@ -138,6 +138,7 @@ article {
 
 .seat.noAvailable {
   background-color: red;
+  cursor: no-drop;
 }
 
 .strona {
@@ -256,4 +257,9 @@ article {
 
 #Logform {
   margin-top: 100px;
+}
+
+#language {
+  background-color: #003099;
+  color: white;
 }

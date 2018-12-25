@@ -38,6 +38,7 @@ public class DownloadTicket extends HttpServlet {
 //		System.out.println("request " + request.getParameter("arrivalPlace"));
 //		System.out.println("request " + request.getParameter("departurePlace"));
 //		System.out.println("request " + request.getParameter("idLotu"));
+//		System.out.println("request " + request.getParameter("lang"));
 
 		String seatNumber = request.getParameter("seatNumber");
 		String pesel = request.getParameter("pesel");
@@ -49,6 +50,7 @@ public class DownloadTicket extends HttpServlet {
 		String departurePlace = request.getParameter("departurePlace");
 		String date = request.getParameter("date");
 		String idLotu = request.getParameter("idLotu");
+		String lang = request.getParameter("lang");
 
 		java.sql.Statement aStatement = null;
 
@@ -74,9 +76,14 @@ public class DownloadTicket extends HttpServlet {
 		}
 
 		response.setContentType("text/plain");
-		response.setHeader("Content-Disposition", "attachment;filename=downloadname.txt");
-
-		String s = "Bilet lotniczy \r\n" +
+		response.setHeader("Content-Disposition", "attachment;filename=TICKET.txt");
+		
+		String sTicketText = "";
+				
+		if(lang.equals("PL")) {
+			
+		
+			sTicketText = "Bilet lotniczy \r\n" +
 		"\r\n" + "WAT AIRLINES SA\r\n" + 
 				"ul. Wojskowa 1/2\r\n"
 				+ "00-001 Warszawa\r\n" +
@@ -94,8 +101,29 @@ public class DownloadTicket extends HttpServlet {
 				"\r\n" + "Nr miejsca: \r\n" + seatNumber + 
 				"\r\n" + "\r\n"
 				+ "Cena: 350zł ;";
-
-		InputStream input = new ByteArrayInputStream(s.getBytes("UTF8"));
+		}
+		else if (lang.equals("EN")) 
+		{
+			sTicketText = "Ticket \r\n" +
+					"\r\n" + "WAT AIRLINES SA\r\n" + 
+							"ul. Wojskowa 1/2\r\n"
+							+ "00-001 Warsaw\r\n" +
+							"\r\n" + "Name:\r\n" + 
+							" " + name + "\r\n" +
+							"Lastname:\r\n" + " " + lastName
+							+ "\r\n" + "PESEL:\r\n" + " " + pesel + 
+							"\r\n" + "\r\n" + "Departure city:\r\n" + " "
+							+ departurePlace +
+							"\r\n" + "Arrival city:\r\n" + " " + arrivalPlace + 
+							"\r\n"
+							+ "Departure hour: \r\n" + " " + arrivalTime + 
+							"\r\n" + "Arrival hour:\r\n" + " " + departureTime
+							+ "\r\n" + "Date:\r\n" + " " + date + 
+							"\r\n" + "Seat number: \r\n" + seatNumber + 
+							"\r\n" + "\r\n"
+							+ "Price: 350zł ;";
+		}
+		InputStream input = new ByteArrayInputStream(sTicketText.getBytes("UTF8"));
 
 		int read = 0;
 		byte[] bytes = new byte[BYTES_DOWNLOAD];

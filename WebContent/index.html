@@ -7,7 +7,7 @@
   <script type="text/javascript" src="extjs-master/build/ext-all.js"> </script>
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.0/css/all.css" integrity="sha384-aOkxzJ5uQz7WBObEZcHvV5JvRW3TUc2rNPA7pe3AwnsUohiw1Vj2Rgx2KSOkF5+h" crossorigin="anonymous">
   <meta charset="UTF-8">
-  <title>Przykład 37 - Minifikacja i konkatenacja skryptów</title>
+  <title>Bilety lotnicze</title>
   <link rel="stylesheet" href="css/main.css" />
   <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 </head>
@@ -15,9 +15,10 @@
 <body>
   <div id="intro">
     <img class="logoWAT" alt="WATLOGO" src="img/watLogo.jpg">
-    <h1>BILETY LOTNICZE</h1>
+    <h1 id="app_title">BILETY LOTNICZE</h1>
     <h1>-WAT AIRLINES- </h1>
     <button id="registartion"> Rejestracja</button>
+    <button id="language">Przełącz na angielski</button>
     <form action="http://localhost:8080/BiletyLotnicze/zaloguj.html" method="get">
       <input id="login" type="submit" value="Zaloguj">
     </form>
@@ -46,58 +47,130 @@
 
   </div>
 
+  <script src="js/texts.js"></script>
+
 
   <script>
-    // czyZalogowany = function() {
-    //   alert("musisz sie logowac");
-    // }
+    //------------------------------------------------------------------------------
+    function getString(sKey, sLang) {
+      //------------------------------------------------------------------------------
+      for (var key in aLanguageProperties) {
+        if (key == sKey) {
+
+          if (sLang === "PL") {
+            return aLanguageProperties[key].PL;
+          }
+          if (sLang === "EN") {
+            return aLanguageProperties[key].EN;
+          }
+        }
+      }
+    }
+
+    //------------------------------------------------------------------------------
+    function setLang(bChanged) {
+      //------------------------------------------------------------------------------
+      if (bChanged) {
+        if (CURRENT_LANG.lang == "PL") {
+          CURRENT_LANG.lang = "EN";
+        } else if (CURRENT_LANG.lang == "EN") {
+          CURRENT_LANG.lang = "PL";
+        }
+      }
+
+      Ext.util.Cookies.set('jezyk', CURRENT_LANG.lang);
+
+      var sLang = CURRENT_LANG.lang;
+
+      var aTitle = document.getElementById("app_title");
+      aTitle.innerHTML = getString("app_title", sLang);
+
+      var aRegistration = document.getElementById("registartion");
+      aRegistration.innerHTML = getString("registartion", sLang);
+
+      var aLanguage = document.getElementById("language");
+      aLanguage.innerHTML = getString("language", sLang);
+
+      var aLogin = document.getElementById("login");
+      aLogin.value = getString("login", sLang);
+
+      var aInputFromCity = document.getElementById("inputFromCity");
+      aInputFromCity.placeholder = getString("inputFromCity", sLang);
+
+      var aInputToCity = document.getElementById("inputToCity");
+      aInputToCity.placeholder = getString("inputToCity", sLang);
+
+      var aSearchBtn = document.getElementById("submit");
+      aSearchBtn.innerHTML = getString("button_Search", sLang);
+
+      var aCancel = document.getElementById("cancel1");
+      if (aCancel) {
+        aCancel.innerHTML = getString("button_Cancel", sLang);
+      }
+      var aPopupTologin = document.getElementById("popupTologin");
+      if (aPopupTologin) {
+        aPopupTologin.title = getString("popupTologin", sLang);
+      }
+      return;
+    }
+
+    (function() {
+      var aCookieLang = Ext.util.Cookies.get('jezyk');
+      CURRENT_LANG.lang = aCookieLang;
+      setLang(false);
+    })();
+
+    var aLanguage = document.getElementById("language");
+    aLanguage.addEventListener("click", function() {
+      setLang(true);
+    }, true);
+
 
     //------------------------------------------------------------------------------
     deleteConnectionsItemsNoLogin = function() {
       //------------------------------------------------------------------------------
-      var usun = document.getElementsByClassName("connectionItemNoLogin");
-      var len = usun.length;
-      if (usun.length != 0) {
+      var aDelete = document.getElementsByClassName("connectionItemNoLogin");
+      var nLength = aDelete.length;
+      if (aDelete.length != 0) {
 
-        for (var i = 0; i < len; i++) {
-          usun[0].parentNode.removeChild(usun[0]);
+        for (var i = 0; i < nLength; i++) {
+          aDelete[0].parentNode.removeChild(aDelete[0]);
         }
       }
     }
 
 
+    var aCancel = document.getElementById("cancel1")
+    aCancel.addEventListener("click", deleteConnectionsItemsNoLogin, true);
 
-    var cancel = document.getElementById("cancel1")
-    cancel.addEventListener("click", deleteConnectionsItemsNoLogin, true);
-
-    var submit = document.getElementById("submit")
-    submit.addEventListener("click", sendAjax, true);
+    var aSubmit = document.getElementById("submit")
+    aSubmit.addEventListener("click", sendAjax, true);
 
 
     //------------------------------------------------------------------------------
     function sendAjax() {
       //------------------------------------------------------------------------------
-      var usun = document.getElementsByClassName("connectionItemNoLogin");
-      if (usun.length != 0) {
+      var aDelete = document.getElementsByClassName("connectionItemNoLogin");
+      if (aDelete.length != 0) {
 
-        var len = usun.length;
+        var nLength = aDelete.length;
 
-        for (var i = 0; i < len; i++) {
-          usun[0].parentNode.removeChild(usun[0]);
+        for (var i = 0; i < nLength; i++) {
+          aDelete[0].parentNode.removeChild(aDelete[0]);
         }
       }
 
-      var article = new Object();
-      article.inputFromCity = $('#inputFromCity').val();
-      article.inputToCity = $('#inputToCity').val();
+      var aParam = new Object();
+      aParam.inputFromCity = $('#inputFromCity').val();
+      aParam.inputToCity = $('#inputToCity').val();
       var dateControl = document.querySelector('input[type="date"]');
-      article.date = dateControl.value;
+      aParam.date = dateControl.value;
 
       $.ajax({
         url: "http://localhost:8080/BiletyLotnicze//jsonservlet",
         type: 'POST',
         dataType: 'json',
-        data: JSON.stringify(article),
+        data: JSON.stringify(aParam),
         contentType: 'application/json',
         mimeType: 'application/json',
 
@@ -106,6 +179,7 @@
           for (var i in data) {
 
             var div = document.createElement("div");
+            div.id = "popupTologin"
             div.style.width = "700px";
             div.style.height = "22px";
             div.style.textAlign = "center";
@@ -114,19 +188,19 @@
             div.style.marginTop = "15px";
             div.className = "connectionItemNoLogin";
             div.style.transition = "all 0.7s";
-            div.title = "Musisz być zalogowany, aby przeglądać informacje o połączeniu";
-            div.innerHTML = data[i].inputFromCity + " -> " + data[i].inputToCity + " (" + data[i].departure + " - " + data[i].arrival + "), nr lotu: " + data[i].IDLotu;
-
+            div.title = getString("popupTologin", CURRENT_LANG.lang);
+            div.innerHTML = getString("from", CURRENT_LANG.lang) + "<b>" +data[i].inputFromCity + "</b>" + " " + getString("to", CURRENT_LANG.lang) + " <b>" + data[i].inputToCity + "</b>" + " (" + data[i].departure + " - " + data[i].arrival + "), " + getString("flightNum", CURRENT_LANG.lang) + data[i].IDLotu;
             document.getElementById("added-articles").appendChild(div);
 
             div.addEventListener("click", function() {
-              showMessageBox("Musisz być zalogowany, aby wyświetlić szczegóły połączenia")
+              showMessageBox(getString("popupTologin", CURRENT_LANG.lang));
             }, true);
 
           }
 
           if (data.length == 0) {
-            showMessageBox("Nie znaleziono żadnych połączeń!");
+            //showMessageBox("Nie znaleziono żadnych połączeń!");
+            showMessageBox(getString("No_connection_found", CURRENT_LANG.lang));
           }
 
         },
@@ -170,7 +244,7 @@
         labelWidth: 100,
         url: 'http://localhost:8080/BiletyLotnicze/zaloguj.html',
         height: 200,
-        width: 300,
+        width: 350,
         frame: true,
 
         defaults: {
@@ -181,7 +255,7 @@
         items: [{
             xtype: 'textfield',
             minWidth: 275,
-            fieldLabel: 'login',
+            fieldLabel: getString("label_login", CURRENT_LANG.lang),
             name: 'login',
             vtype: 'login',
             id: 'loginInput'
@@ -189,8 +263,8 @@
           {
             xtype: 'textfield',
             minWidth: 275,
-            inputType: 'Email',
-            fieldLabel: 'email',
+            inputType: 'email',
+            fieldLabel: getString("label_email", CURRENT_LANG.lang),
             name: 'email',
             allowBlank: false,
             id: 'emailInput'
@@ -199,14 +273,14 @@
             xtype: 'textfield',
             minWidth: 275,
             inputType: 'password',
-            fieldLabel: 'password',
+            fieldLabel: getString("label_password", CURRENT_LANG.lang),
             name: 'password',
             allowBlank: false,
             id: 'passwordInput'
           }
         ],
         buttons: [{
-            text: 'Zarejestruj!',
+            text: getString("button_register", CURRENT_LANG.lang),
             minWidth: 75,
             handler: function() {
               var aRegisterParmas = new Object();
@@ -218,6 +292,12 @@
               aRegisterParmas.email = sEmail;
               aRegisterParmas.password = sPassword;
 
+
+              if (sLogin == "" || sEmail == "" || sPassword == "") {
+                Ext.Msg.alert(getString("Warning", CURRENT_LANG.lang), getString("empty_value", CURRENT_LANG.lang), null);
+                return;
+              }
+
               $.ajax({
                 url: "http://localhost:8080/BiletyLotnicze//register",
                 type: 'POST',
@@ -228,7 +308,7 @@
 
                 success: function(data) {
 
-                  Ext.Msg.alert('Uwaga!', data, null);
+                  Ext.Msg.alert(getString("Warning", CURRENT_LANG.lang), getString("user_already_exists", CURRENT_LANG.lang), null);
 
                   if (data.indexOf("istnieje") > -1) {
 
@@ -273,7 +353,7 @@
     //------------------------------------------------------------------------------
     showMessageBox = function(sText) {
       //------------------------------------------------------------------------------
-      Ext.Msg.alert('Uwaga!', sText, null);
+      Ext.Msg.alert(getString("Warning", CURRENT_LANG.lang), sText, null);
     }
 
 
@@ -282,7 +362,6 @@
 
 
   </script>
-
 
 </body>
 
